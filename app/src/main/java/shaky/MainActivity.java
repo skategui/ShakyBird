@@ -57,7 +57,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
     private SensorManager sensorMgr;
     private long lastUpdate;
     private float x,y,z, last_x, last_y, last_z;
-    private static final int SHAKE_THRESHOLD = 800;
+    private static final int SHAKE_THRESHOLD = 400;
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -98,7 +98,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 			private void ready(){
 				
 				mCurrentWorldPosition -= SCROLL_SPEED;	
-				mSceneManager.mBird.hover();		
+				mSceneManager.getBird().hover();
 				
 				if(!mResourceManager.mMusic.isPlaying()){
 					mResourceManager.mMusic.play();
@@ -106,14 +106,14 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 			}
 
 			private void die(){
-				float newY = mSceneManager.mBird.move(); // get the bird to update itself			
+				float newY = mSceneManager.getBird().move(); // get the bird to update itself
 				if(newY >= FLOOR_BOUND) dead();
 			}
 
 			private void play(){
 
 				mCurrentWorldPosition -= SCROLL_SPEED;				
-				float newY = mSceneManager.mBird.move(); // get the bird to update itself			
+				float newY = mSceneManager.getBird().move(); // get the bird to update itself
 				if(newY >= FLOOR_BOUND) gameOver(); // check if it game over from twatting the floor		
 
 				// now create pipes
@@ -129,7 +129,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 					PipePair pipe = pipes.get(i);
 					if(pipe.isOnScreen()){
 						pipe.move(SCROLL_SPEED);
-						if(pipe.collidesWith(mSceneManager.mBird.getSprite())){
+						if(pipe.collidesWith(mSceneManager.getBird().getSprite())){
 							gameOver();
 						}
 
@@ -171,13 +171,13 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
                 float rem =  last_x  + last_y + last_z;
                 float res = add - rem;
                 float speed = Math.abs(res) / diffTime * 10000;
-
                 if (speed > SHAKE_THRESHOLD) {
+                    Log.e("sensor", "shake detected w/ speed: " + speed);
 
                     if (speed > 2 * SHAKE_THRESHOLD)
                         makeItJump();
                     makeItJump();
-                    Log.e("sensor", "shake detected w/ speed: " + speed);
+
                 }
                 last_x = x;
                 last_y = y;
@@ -190,16 +190,8 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
     {
         switch(GAME_STATE){
 
-            case STATE_READY:
-                startPlaying();
-                break;
-
             case STATE_PLAYING:
-                mSceneManager.mBird.flap();
-                break;
-
-            case STATE_DEAD:
-                //restartGame();
+                mSceneManager.getBird().flap();
                 break;
         }
     }
@@ -211,8 +203,8 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
     }
 
     protected void spawnNewPipe() {
-		int Min = 150;
-		int Max = 450;
+		int Min = 200; // 150
+		int Max = 550; // 450
 		int spawn = Min + (int)(Math.random() * ((Max - Min) + 1));
 		PipePair newPipes = new PipePair(spawn, this.getVertexBufferObjectManager(), mScene);
 		pipes.add(newPipes);		
@@ -267,11 +259,12 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 					switch(GAME_STATE){
 
 					case STATE_READY:
+                       // PipePair.resetPosition();
 						startPlaying();
 						break;
 
 					case STATE_PLAYING:
-						mSceneManager.mBird.flap();
+						mSceneManager.getBird().flap();
 						break;
 
 					case STATE_DEAD:
@@ -305,17 +298,35 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 	
 	// STATE SWITCHES
 
+    private void restartGame(){
+        GAME_STATE = STATE_READY;
+        mResourceManager.mMusic.resume();
+        mSceneManager.getBird().restart();
+        mScore = 0;
+        updateScore();
+
+        for (int i = 0; i<pipes.size(); i++){
+            PipePair pipe = pipes.get(i);
+            pipe.destroy();
+        }
+        pipes.clear();
+
+        mScene.attachChild(mSceneManager.getmGetReadyText());
+        mScene.attachChild(mSceneManager.getmInstructionsSprite());
+        //mScene.attachChild(mSceneManager.mCopyText);
+    }
+
 	private void startPlaying(){
 		
 		GAME_STATE = STATE_PLAYING;	
 		
 		mResourceManager.mMusic.pause();
 		mResourceManager.mMusic.seekTo(0);
-		mScene.detachChild(mSceneManager.mGetReadyText);
-		mScene.detachChild(mSceneManager.mInstructionsSprite);
-		mScene.detachChild(mSceneManager.mCopyText);
+		mScene.detachChild(mSceneManager.getmGetReadyText());
+		mScene.detachChild(mSceneManager.getmInstructionsSprite());
+		//mScene.detachChild(mSceneManager.mCopyText);
 		updateScore();
-		mSceneManager.mBird.flap();
+		mSceneManager.getBird().flap();
 	}
 
 	private void gameOver(){
@@ -323,8 +334,8 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 		GAME_STATE = STATE_DYING;
 		
 		mResourceManager.mDieSound.play();
-		mScene.attachChild(mSceneManager.mYouSuckText);
-		mSceneManager.mBird.getSprite().stopAnimation();		
+		mScene.attachChild(mSceneManager.getmYouSuckText());
+		mSceneManager.getBird().getSprite().stopAnimation();
 		ScoreManager.SetBestScore(this, mScore);	
 	}
 
@@ -335,7 +346,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 		mTimer = new TimerHandler(1.6f, false, new ITimerCallback() {
 			@Override
 			public void onTimePassed(final TimerHandler pTimerHandler) {
-				mScene.detachChild(mSceneManager.mYouSuckText);
+				mScene.detachChild(mSceneManager.getmYouSuckText());
 				restartGame();
 				mScene.unregisterUpdateHandler(mTimer);
 			}
@@ -344,23 +355,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 		mScene.registerUpdateHandler(mTimer);
 	}
 
-	private void restartGame(){
-		GAME_STATE = STATE_READY;
-		mResourceManager.mMusic.resume();
-		mSceneManager.mBird.restart();
-		mScore = 0;
-		updateScore();
 
-		for (int i = 0; i<pipes.size(); i++){
-			PipePair pipe = pipes.get(i);
-			pipe.destroy();			
-		}		
-		pipes.clear();
-
-		mScene.attachChild(mSceneManager.mGetReadyText);
-		mScene.attachChild(mSceneManager.mInstructionsSprite);
-		mScene.attachChild(mSceneManager.mCopyText);		
-	}
 
 	@Override
 	public final void onPause() {

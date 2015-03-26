@@ -17,13 +17,12 @@ public class SceneManager {
 	private ParallaxBackground mParallaxBackground;
 
 	// text objects
-	Text mScoreText;
-	Text mGetReadyText;
-	Sprite mInstructionsSprite;	
-	Text mCopyText;	
-	Text mYouSuckText;
-	
-	Bird mBird;
+    private Text mScoreText;
+    private Text mGetReadyText;
+    private Sprite mInstructionsSprite;
+    private Text mYouSuckText;
+
+    private Bird mBird;
 
 	public SceneManager(SimpleBaseGameActivity context, ResourceManager resourceManager, ParallaxBackground parallaxBackground){
 		this.mContext = context;	
@@ -66,16 +65,9 @@ public class SceneManager {
 		centerSprite(mInstructionsSprite);
 		mInstructionsSprite.setY(mInstructionsSprite.getY() + 20);
 
-		// copy text
-		mCopyText = new Text(0, 750, mResourceManager.mCopyFont, "(c) Dean Wild 2014", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
-		mCopyText.setZIndex(3);
-		mScene.attachChild(mCopyText);
-		centerText(mCopyText);
-
-
-		// you suck text		
-		mYouSuckText = new Text(0, MainActivity.CAMERA_HEIGHT / 2 - 100, mResourceManager.mYouSuckFont, "You Suck!", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
-		mYouSuckText.setZIndex(3);		
+		// you suck text
+		mYouSuckText = new Text(0, MainActivity.CAMERA_HEIGHT / 2 - 100, mResourceManager.mYouSuckFont, " Failed !", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+		mYouSuckText.setZIndex(3);
 		centerText(mYouSuckText);
 
 		return mScene;
@@ -99,4 +91,25 @@ public class SceneManager {
 	private void centerText(Text text){
 		text.setX((MainActivity.CAMERA_WIDTH / 2) - (text.getWidth() / 2));		
 	}
+
+    public Bird getBird()
+    {
+        return mBird;
+    }
+
+    public Text getmScoreText() {
+        return mScoreText;
+    }
+
+    public Text getmGetReadyText() {
+        return mGetReadyText;
+    }
+
+    public Sprite getmInstructionsSprite() {
+        return mInstructionsSprite;
+    }
+
+    public Text getmYouSuckText() {
+        return mYouSuckText;
+    }
 }

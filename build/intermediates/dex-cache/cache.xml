@@ -9,20 +9,6 @@
         <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/classes-519eb3469ae9c249f0f69e27a918588ee3f50f6c.jar" />
     </item>
     <item
-        jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-0878d51d07725e036a5ee044a7ff5949aaf84c16.jar" />
-    </item>
-    <item
-        jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/libs/native-libs.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="92151bcb215bf7a82d5163cf7a8a13ba0cf544df">
-        <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/native-libs-8bbdf77c464595930a653ba10f6952db00374ba0.jar" />
-    </item>
-    <item
         jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/Shakybird/andEnginePhysicsBox2DExtension/unspecified/classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -37,6 +23,13 @@
         <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-089f8f4b5840c1d4c168e929428593e89aed03ec.jar" />
     </item>
     <item
+        jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-0878d51d07725e036a5ee044a7ff5949aaf84c16.jar" />
+    </item>
+    <item
         jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -47,8 +40,15 @@
         jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/Shakybird/andEngine/unspecified/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="2b38124b8c72efda0b9422bb14ac952e080c06ec">
+        sha1="1cde2a58263ffa1b054261561e37227617077852">
         <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/classes-2d3cc53e76f5eda885eeaaa2476c9c549c5153fb.jar" />
+    </item>
+    <item
+        jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/libs/native-libs.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="92151bcb215bf7a82d5163cf7a8a13ba0cf544df">
+        <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/native-libs-8bbdf77c464595930a653ba10f6952db00374ba0.jar" />
     </item>
 
 </items>
