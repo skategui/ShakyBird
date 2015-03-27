@@ -35,7 +35,9 @@ public class ResourceManager {
 
 	//textures
 	BitmapTextureAtlas mBackgroundBitmapTextureAtlas;
+    BitmapTextureAtlas mBackgroundBitmapTextureAtlas2;
 	ITextureRegion mBackgroundTextureRegion;
+    ITextureRegion mBackgroundTextureSpace;
 	TextureRegion mInstructionsTexture;
 
 	private SimpleBaseGameActivity context;
@@ -52,12 +54,18 @@ public class ResourceManager {
 		// background
 		mBackgroundBitmapTextureAtlas = new BitmapTextureAtlas(context.getTextureManager(), 718, 1184, 
 				TextureOptions.NEAREST_PREMULTIPLYALPHA);
+        mBackgroundBitmapTextureAtlas2 = new BitmapTextureAtlas(context.getTextureManager(), 718, 1184,
+                TextureOptions.NEAREST_PREMULTIPLYALPHA);
 		mBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(mBackgroundBitmapTextureAtlas, context.getAssets(), "background480.png", 0, 0);
 
-		mBackgroundBitmapTextureAtlas.load();		
+        mBackgroundTextureSpace = BitmapTextureAtlasTextureRegionFactory
+                .createFromAsset(mBackgroundBitmapTextureAtlas2, context.getAssets(), "background_space2.png", 0, 0);
 
-		// instructions img
+		mBackgroundBitmapTextureAtlas.load();
+        mBackgroundBitmapTextureAtlas2.load();
+
+        // instructions img
 		BitmapTextureAtlas instructionsTextureAtlas = new BitmapTextureAtlas(context.getTextureManager(), 285, 245, TextureOptions.BILINEAR);
 		mInstructionsTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(instructionsTextureAtlas, context, "instructions.png", 0, 0);
 		instructionsTextureAtlas.load();

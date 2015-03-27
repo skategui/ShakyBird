@@ -28,50 +28,67 @@ public class SceneManager {
 		this.mContext = context;	
 		this.mResourceManager = resourceManager;
 		this.mParallaxBackground = parallaxBackground;
-	}	
+	}
+
+
+    public Scene createSceneSpace()
+    {
+        Scene mScene = new Scene();
+        VertexBufferObjectManager vbo = mContext.getVertexBufferObjectManager();
+        Sprite backgroundSprite = new Sprite(0, 0 , mResourceManager.mBackgroundTextureSpace, vbo);
+        mParallaxBackground.attachParallaxEntity(new ParallaxEntity(1, backgroundSprite));
+
+        addItemOnscene(mScene);
+        return mScene;
+    }
+
 		
-	public Scene createScene(){
+	public Scene createSceneHeart(){
 
-		Scene mScene = new Scene();
-		VertexBufferObjectManager vbo = mContext.getVertexBufferObjectManager();
+        Scene mScene = new Scene();
+        VertexBufferObjectManager vbo = mContext.getVertexBufferObjectManager();
+        Sprite backgroundSprite = new Sprite(0, 0 , mResourceManager.mBackgroundTextureRegion, vbo);
+        mParallaxBackground.attachParallaxEntity(new ParallaxEntity(1, backgroundSprite));
 
-		Sprite backgroundSprite = new Sprite(0, 0 , mResourceManager.mBackgroundTextureRegion, vbo);	
-		mParallaxBackground.attachParallaxEntity(new ParallaxEntity(1, backgroundSprite));
-
-		mScene.setBackground(mParallaxBackground);
-		mScene.setBackgroundEnabled(true);
-
-
-		// bird		
-		float birdStartXOffset = (MainActivity.CAMERA_WIDTH / 4) - (Bird.BIRD_WIDTH / 4);
-		float birdYOffset = (MainActivity.CAMERA_HEIGHT / 2) - (Bird.BIRD_HEIGHT / 4);
-		mBird = new Bird(birdStartXOffset, birdYOffset, mContext.getVertexBufferObjectManager(), mScene);
-
-		//score
-		mScoreText = new Text(0, 60, mResourceManager.mScoreFont, "        ", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
-		mScoreText.setZIndex(3);
-		mScene.attachChild(mScoreText);		
-
-		// get ready text
-		mGetReadyText = new Text(0, 220, mResourceManager.mGetReadyFont, "Get Ready!", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
-		mGetReadyText.setZIndex(3);
-		mScene.attachChild(mGetReadyText);
-		centerText(mGetReadyText);
-
-		// instructions image
-		mInstructionsSprite = new Sprite(0, 0, 200, 172, mResourceManager.mInstructionsTexture, mContext.getVertexBufferObjectManager());
-		mInstructionsSprite.setZIndex(3);
-		mScene.attachChild(mInstructionsSprite);
-		centerSprite(mInstructionsSprite);
-		mInstructionsSprite.setY(mInstructionsSprite.getY() + 20);
-
-		// you suck text
-		mYouSuckText = new Text(0, MainActivity.CAMERA_HEIGHT / 2 - 100, mResourceManager.mYouSuckFont, " Failed !", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
-		mYouSuckText.setZIndex(3);
-		centerText(mYouSuckText);
+        addItemOnscene(mScene);
 
 		return mScene;
 	}
+
+
+    public void addItemOnscene(Scene mScene)
+    {
+        mScene.setBackground(mParallaxBackground);
+        mScene.setBackgroundEnabled(true);
+
+        // bird
+        float birdStartXOffset = (MainActivity.CAMERA_WIDTH / 4) - (Bird.BIRD_WIDTH / 4);
+        float birdYOffset = (MainActivity.CAMERA_HEIGHT / 2) - (Bird.BIRD_HEIGHT / 4);
+        mBird = new Bird(birdStartXOffset, birdYOffset, mContext.getVertexBufferObjectManager(), mScene);
+
+        //score
+        mScoreText = new Text(0, 60, mResourceManager.mScoreFont, "        ", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        mScoreText.setZIndex(3);
+        mScene.attachChild(mScoreText);
+
+        // get ready text
+        mGetReadyText = new Text(0, 220, mResourceManager.mGetReadyFont, "Get Ready!", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        mGetReadyText.setZIndex(3);
+        mScene.attachChild(mGetReadyText);
+        centerText(mGetReadyText);
+
+        // instructions image
+        mInstructionsSprite = new Sprite(0, 0, 200, 172, mResourceManager.mInstructionsTexture, mContext.getVertexBufferObjectManager());
+        mInstructionsSprite.setZIndex(3);
+        mScene.attachChild(mInstructionsSprite);
+        centerSprite(mInstructionsSprite);
+        mInstructionsSprite.setY(mInstructionsSprite.getY() + 20);
+
+        // you suck text
+        mYouSuckText = new Text(0, MainActivity.CAMERA_HEIGHT / 2 - 100, mResourceManager.mYouSuckFont, " Failed !", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        mYouSuckText.setZIndex(3);
+        centerText(mYouSuckText);
+    }
 	
 	public static void centerSprite(Sprite sprite){
 		sprite.setX((MainActivity.CAMERA_WIDTH / 2) - (sprite.getWidth() / 2));	

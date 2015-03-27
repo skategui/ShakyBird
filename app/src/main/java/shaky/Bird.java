@@ -92,7 +92,7 @@ public class Bird {
 		mSprite.setRotation(mCurrentBirdAngle);
 	}
 
-	public float move(){
+	public float moveWithGravity(){
 
 		float newY = mSprite.getY() + mVerticalSpeed; // calculate the birds new height based on the current vertical speed
 		newY = Math.max(newY, 0); // don't allow through the ceiling
@@ -118,6 +118,36 @@ public class Bird {
 
 		return newY;
 	}
+
+
+
+
+    public float moveWithoutGravitiy(){
+
+        float newY = mSprite.getY() - mVerticalSpeed; // calculate the birds new height based on the current vertical speed
+        newY = Math.max(newY, 0); // don't allow through the ceiling
+        newY = Math.min(newY, MainActivity.FLOOR_BOUND); // don't allow through the floor
+        mSprite.setY(newY); //apply the new position
+
+        // now calculate the new speed
+        mAcceleration -= GRAVITY; // always applying gravity to current acceleration
+        mVerticalSpeed -= mAcceleration; // always applying the current acceleration tp the current speed
+        mVerticalSpeed = Math.min(mVerticalSpeed, MAX_DROP_SPEED); // but capping it to a terminal velocity (science bitch)
+
+        if(mVerticalSpeed <= (FLAP_POWER)){
+            mCurrentBirdAngle -= BIRD_FLAP_ANGLE_POWER;
+        }else{
+            mCurrentBirdAngle += FLAP_ANGLE_DRAG;
+        }
+
+        mCurrentBirdAngle = Math.max(mCurrentBirdAngle, BIRD_MAX_FLAP_ANGLE);
+        mCurrentBirdAngle = Math.min(mCurrentBirdAngle, BIRD_MAX_DROP_ANGLE);
+
+        // now apply bird angle based on current speed
+        mSprite.setRotation(mCurrentBirdAngle);
+
+        return newY;
+    }
 
 	public void flap(){
 		mVerticalSpeed = (-FLAP_POWER);

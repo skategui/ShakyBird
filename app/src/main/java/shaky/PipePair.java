@@ -1,5 +1,7 @@
 package shaky;
 
+import android.util.Log;
+
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.TextureOptions;
@@ -58,7 +60,15 @@ public class PipePair {
 	private Sprite mUpperPipeSection;
 	private Sprite mLowerPipe;
 	private Sprite mLowerPipeSection;
+    private static int score = 0;
+    private static int gap = 220;
 
+
+    public static void clearScore()
+    {
+        score = 0;
+        gap  = 220;
+    }
 
 	private static final float PIPE_Y_OFFSET = MainActivity.CAMERA_WIDTH + 200; // make sure they always spawn way off screen
 	
@@ -70,25 +80,29 @@ public class PipePair {
 		this.mScene = mScene;
 
 		// upper pipe
-		mUpperPipe = new Sprite(PIPE_Y_OFFSET, mOpeningHeight-122, 88, 41, mUpperPipeTexture, mVertexBufferObjectManager);
+		mUpperPipe = new Sprite(PIPE_Y_OFFSET, mOpeningHeight-gap, 88, 41, mUpperPipeTexture, mVertexBufferObjectManager);
 		mUpperPipe.setZIndex(1);
 		mScene.attachChild(mUpperPipe);
 
-		mUpperPipeSection = new Sprite(PIPE_Y_OFFSET + 3, 0, 82, mOpeningHeight-122, mUpperPipeSectionTexture, mVertexBufferObjectManager);
+		mUpperPipeSection = new Sprite(PIPE_Y_OFFSET + 3, 0, 82, mOpeningHeight-gap, mUpperPipeSectionTexture, mVertexBufferObjectManager);
 		mUpperPipeSection.setZIndex(1);
 		mScene.attachChild(mUpperPipeSection);
 
 		//lower pipe		
-		mLowerPipe = new Sprite(PIPE_Y_OFFSET, mOpeningHeight+81, 88, 41, mLowerPipeTexture, mVertexBufferObjectManager);
+		mLowerPipe = new Sprite(PIPE_Y_OFFSET, mOpeningHeight+gap - 41, 88, 41, mLowerPipeTexture, mVertexBufferObjectManager);
 		mLowerPipe.setZIndex(1);
 		mScene.attachChild(mLowerPipe);
 
-		mLowerPipeSection = new Sprite(PIPE_Y_OFFSET + 3, mOpeningHeight+122, 82, (644-(mOpeningHeight+122)), mLowerPipeSectionTexture, mVertexBufferObjectManager);
+		mLowerPipeSection = new Sprite(PIPE_Y_OFFSET + 3, mOpeningHeight+gap, 82, (644-(mOpeningHeight+gap)), mLowerPipeSectionTexture, mVertexBufferObjectManager);
 		mLowerPipeSection.setZIndex(1);
 		mScene.attachChild(mLowerPipeSection);
 		mScene.sortChildren();
-
-	}
+        score++;
+        if (score % 4 == 0)
+        {
+            gap -= 20;
+        }
+    }
 
 
 	public void move(float offset){

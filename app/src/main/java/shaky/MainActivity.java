@@ -3,7 +3,6 @@ package shaky;
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,30 +26,32 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 	public static final float FLOOR_BOUND = 601; // 
 	protected static final int PIPE_SPAWN_INTERVAL = 100; // distance between pipe obstacles
 
-	// game states
-	protected static final int STATE_START = 0;
-	protected static final int STATE_READY = 1;
-	protected static final int STATE_PLAYING = 2;
-	protected static final int STATE_DYING = 3;
-	protected static final int STATE_DEAD = 4;
 
-	private int GAME_STATE = STATE_READY;
+    private enum eState
+    {
+        READY,
+        PLAYING,
+        DYING,
+        DEAD
+    }
 
-    private int nbrCLick = 0;
+	private eState GAME_STATE = eState.READY;
 
 	// objects
 	private TimerHandler mTimer;
 	private SceneManager mSceneManager;
 	private ResourceManager mResourceManager;	
-	private Scene mScene;
-	private Camera mCamera;
+	private Scene mSceneHeart;
+    private Scene mSceneSpace;
+    private boolean withGravity = false;
+    private Camera mCamera;
 
 	// sprites
 	private ParallaxBackground mBackground;
 	private ArrayList<PipePair> pipes = new ArrayList<PipePair>();
 
 	// game variables
-	private int mScore = 0;
+	private int _score = 0;
 	protected float mCurrentWorldPosition;
 	private float mBirdXOffset;
 
@@ -58,15 +59,15 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
     private long lastUpdate;
     private float x,y,z, last_x, last_y, last_z;
     private static final int SHAKE_THRESHOLD = 400;
+
+    boolean lastwithGravity = false;
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 
 
         sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensorMgr.registerListener(this,
-                SensorManager.SENSOR_ACCELEROMETER,
-                SensorManager.SENSOR_DELAY_GAME);
+        sensorMgr.registerListener(this,  SensorManager.SENSOR_ACCELEROMETER, SensorManager.SENSOR_DELAY_GAME);
 
 		CAMERA_WIDTH = ScreenSizeHelper.calculateScreenWidth(this, CAMERA_HEIGHT);
 
@@ -79,15 +80,15 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 
 				switch(GAME_STATE){
 
-				case STATE_READY:
+				case READY:
 					ready();
 					break;
 
-				case STATE_PLAYING:
+				case PLAYING:
 					play();
 					break;
 
-				case STATE_DYING:
+				case DYING:
 					die();
 					break;
 				}
@@ -106,15 +107,31 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 			}
 
 			private void die(){
-				float newY = mSceneManager.getBird().move(); // get the bird to update itself
+				float newY = mSceneManager.getBird().moveWithGravity(); // get the bird to update itself
 				if(newY >= FLOOR_BOUND) dead();
 			}
 
 			private void play(){
 
-				mCurrentWorldPosition -= SCROLL_SPEED;				
-				float newY = mSceneManager.getBird().move(); // get the bird to update itself
-				if(newY >= FLOOR_BOUND) gameOver(); // check if it game over from twatting the floor		
+				mCurrentWorldPosition -= SCROLL_SPEED;
+                float newY = 0;
+
+                if(_score >= 5 && _score <= 8)
+                    withGravity = true;
+                else if(_score >= 13 && _score <= 18)
+                    withGravity = true;
+                 else
+                withGravity = false;
+                if (withGravity == true)
+                {
+                    newY = mSceneManager.getBird().moveWithoutGravitiy(); // get the bird to update itself
+                }
+                else
+                {
+
+                    newY = mSceneManager.getBird().moveWithGravity(); // get the bird to update itself
+                }
+				if(newY >= FLOOR_BOUND) gameOver(); // check if it game over from twatting the floor
 
 				// now create pipes
 				mPipeSpawnCounter++;
@@ -190,7 +207,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
     {
         switch(GAME_STATE){
 
-            case STATE_PLAYING:
+            case PLAYING:
                 mSceneManager.getBird().flap();
                 break;
         }
@@ -203,10 +220,10 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
     }
 
     protected void spawnNewPipe() {
-		int Min = 200; // 150
-		int Max = 550; // 450
+		int Min = 250; // 150
+		int Max = 450; // 450
 		int spawn = Min + (int)(Math.random() * ((Max - Min) + 1));
-		PipePair newPipes = new PipePair(spawn, this.getVertexBufferObjectManager(), mScene);
+		PipePair newPipes = new PipePair(spawn, this.getVertexBufferObjectManager(), getSCene());
 		pipes.add(newPipes);		
 	}
 		
@@ -229,8 +246,8 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 
 				switch(GAME_STATE){
 
-				case STATE_READY:
-				case STATE_PLAYING:
+				case READY:
+				case PLAYING:
 					final float cameraCurrentX = mCurrentWorldPosition;//mCamera.getCenterX();
 
 					if (prevX != cameraCurrentX) {
@@ -247,62 +264,71 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 		};
 
 		mSceneManager = new SceneManager(this, mResourceManager, mBackground);
-		mScene = mSceneManager.createScene();	
 
-		mScene.setOnSceneTouchListener(new IOnSceneTouchListener() {
+        mSceneHeart= mSceneManager.createSceneHeart();
+        //mSceneSpace = mSceneManager.createSceneSpace();
 
-			@Override
-			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+        defineListener(mSceneHeart);
+        //defineListener(mSceneSpace);
 
-                if(pSceneTouchEvent.isActionDown()){
 
-					switch(GAME_STATE){
-
-					case STATE_READY:
-                       // PipePair.resetPosition();
-						startPlaying();
-						break;
-
-					case STATE_PLAYING:
-						mSceneManager.getBird().flap();
-						break;
-
-					case STATE_DEAD:
-						//restartGame();
-						break;	
-					}								
-				}
-				return false;
-			}
-		});		
-		
 		updateScore();
 
-		return mScene;
+		return getSCene();
 	}
 
+    private void defineListener(Scene scene)
+    {
+        scene.setOnSceneTouchListener(new IOnSceneTouchListener() {
+
+            @Override
+            public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+
+                if (pSceneTouchEvent.isActionDown()) {
+
+                    switch (GAME_STATE) {
+
+                        case READY:
+                            // PipePair.resetPosition();
+                            startPlaying();
+                            break;
+
+                        case PLAYING:
+                            mSceneManager.getBird().flap();
+                            break;
+
+                        case DEAD:
+                            //restartGame();
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
 	private void score(){
-		mScore++;
+		_score++;
 		mResourceManager.mScoreSound.play();
 		updateScore();
 	}
 
 	private void updateScore(){
 
-		if(GAME_STATE == STATE_READY){
+		if(GAME_STATE == eState.READY){
 			mSceneManager.displayBestScore(ScoreManager.GetBestScore(this));
 		}else{
-			mSceneManager.displayCurrentScore(mScore);
+			mSceneManager.displayCurrentScore(_score);
 		}		
 	}
 	
 	// STATE SWITCHES
 
     private void restartGame(){
-        GAME_STATE = STATE_READY;
+        GAME_STATE = eState.READY;
         mResourceManager.mMusic.resume();
         mSceneManager.getBird().restart();
-        mScore = 0;
+        _score = 0;
         updateScore();
 
         for (int i = 0; i<pipes.size(); i++){
@@ -310,49 +336,57 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
             pipe.destroy();
         }
         pipes.clear();
+        PipePair.clearScore();
 
-        mScene.attachChild(mSceneManager.getmGetReadyText());
-        mScene.attachChild(mSceneManager.getmInstructionsSprite());
-        //mScene.attachChild(mSceneManager.mCopyText);
+        getSCene().attachChild(mSceneManager.getmGetReadyText());
+        getSCene().attachChild(mSceneManager.getmInstructionsSprite());
+        //getSCene().attachChild(mSceneManager.mCopyText);
     }
 
 	private void startPlaying(){
 		
-		GAME_STATE = STATE_PLAYING;	
+		GAME_STATE = eState.PLAYING;	
 		
 		mResourceManager.mMusic.pause();
 		mResourceManager.mMusic.seekTo(0);
-		mScene.detachChild(mSceneManager.getmGetReadyText());
-		mScene.detachChild(mSceneManager.getmInstructionsSprite());
-		//mScene.detachChild(mSceneManager.mCopyText);
+		getSCene().detachChild(mSceneManager.getmGetReadyText());
+		getSCene().detachChild(mSceneManager.getmInstructionsSprite());
+		//getSCene().detachChild(mSceneManager.mCopyText);
 		updateScore();
 		mSceneManager.getBird().flap();
 	}
 
+    private Scene getSCene()
+    {
+      //  if (withGravity == true)
+        //    return mSceneSpace;
+        return mSceneHeart;
+    }
+
 	private void gameOver(){
 		
-		GAME_STATE = STATE_DYING;
+		GAME_STATE = eState.DYING;
 		
 		mResourceManager.mDieSound.play();
-		mScene.attachChild(mSceneManager.getmYouSuckText());
+		getSCene().attachChild(mSceneManager.getmYouSuckText());
 		mSceneManager.getBird().getSprite().stopAnimation();
-		ScoreManager.SetBestScore(this, mScore);	
+		ScoreManager.SetBestScore(this, _score);
 	}
 
 	private void dead(){
 
-		GAME_STATE = STATE_DEAD;	
+		GAME_STATE = eState.DEAD;	
 
 		mTimer = new TimerHandler(1.6f, false, new ITimerCallback() {
 			@Override
 			public void onTimePassed(final TimerHandler pTimerHandler) {
-				mScene.detachChild(mSceneManager.getmYouSuckText());
+				getSCene().detachChild(mSceneManager.getmYouSuckText());
 				restartGame();
-				mScene.unregisterUpdateHandler(mTimer);
+				getSCene().unregisterUpdateHandler(mTimer);
 			}
 		});
 
-		mScene.registerUpdateHandler(mTimer);
+		getSCene().registerUpdateHandler(mTimer);
 	}
 
 
