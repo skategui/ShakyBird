@@ -21,57 +21,32 @@ import org.andengine.util.debug.Debug;
 
 public class Bird {
 
-	public static final float BITMAP_WIDTH = 1047f;
-	public static final float BITMAP_HEIGHT = 903f;
-	
-	public static final float BIRD_WIDTH = 55.8f;
-	public static final float BIRD_HEIGHT = 40f;
-	
-	protected static final float MAX_DROP_SPEED = 12.0f;
-	protected static final float GRAVITY = 0.04f; // 0.04f
-	protected static final float FLAP_POWER = 6f;
 
-	protected static final float BIRD_MAX_FLAP_ANGLE = -20;
-	protected static final float BIRD_MAX_DROP_ANGLE = 90;
-	protected static final float FLAP_ANGLE_DRAG = 4.0f;
-	protected static final float BIRD_FLAP_ANGLE_POWER = 15.0f;
+    private static float WRAPAROUND_POINT = (float) (2 * Math.PI);
 
-	private AnimatedSprite mSprite;	
+    private float mHoverStep = 0;
 
-	protected float mAcceleration = GRAVITY;
-	protected float mVerticalSpeed;	
-	protected float mCurrentBirdAngle = BIRD_MAX_FLAP_ANGLE;
+
+    private AnimatedSprite mSprite;
+
+    private float _macceleration = Constants.GRAVITY;
+    private float mVerticalSpeed;
+    private float _currentBirdAngle = Constants.BIRD_MAX_FLAP_ANGLE;
 
 
 	//bird
 	private static BuildableBitmapTextureAtlas mBirdBitmapTextureAtlas;
 	private static TiledTextureRegion mBirdTextureRegion;
-	
-	// sounds
+
+    private float mBirdYOffset, mBirdXOffset;
+
+    // sounds
 	private static Sound mJumpSound;	
 
-	public static void onCreateResources(SimpleBaseGameActivity activity){
-		// bird
-		mBirdBitmapTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), (int)BITMAP_WIDTH, (int)BITMAP_HEIGHT, TextureOptions.NEAREST);
-		mBirdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBirdBitmapTextureAtlas, activity, "birdmap.png", 3, 3);
-		try {
-			mBirdBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
-			mBirdBitmapTextureAtlas.load();
-		} catch (TextureAtlasBuilderException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			mJumpSound = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "jump.ogg");			
-		} catch (final IOException e) {
-			Debug.e(e);
-		}
 
-	}
 
 	
-	private float mBirdYOffset, mBirdXOffset;
-	
+
 	public Bird(float birdXOffset, float birdYOffset, VertexBufferObjectManager mVertexBufferObjectManager, Scene mScene) {
 
 		this.mBirdXOffset = birdXOffset;
@@ -88,78 +63,47 @@ public class Bird {
 		mSprite.animate(25);
 		mSprite.setY(mBirdYOffset);
 		mSprite.setX(mBirdXOffset);
-		mCurrentBirdAngle = 0;
-		mSprite.setRotation(mCurrentBirdAngle);
+		_currentBirdAngle = 0;
+		mSprite.setRotation(_currentBirdAngle);
 	}
 
-	public float moveWithGravity(){
+	public float move(boolean isInSpace){
 
-		float newY = mSprite.getY() + mVerticalSpeed; // calculate the birds new height based on the current vertical speed
+        int coeficient = isInSpace ? -1 : 1;
+
+
+		float newY = mSprite.getY() + mVerticalSpeed * coeficient; // calculate the birds new height based on the current vertical speed
 		newY = Math.max(newY, 0); // don't allow through the ceiling
-		newY = Math.min(newY, MainActivity.FLOOR_BOUND); // don't allow through the floor
+		newY = Math.min(newY, Constants.FLOOR_BOUND); // don't allow through the floor
 		mSprite.setY(newY); //apply the new position
 
 		// now calculate the new speed
-		mAcceleration += GRAVITY; // always applying gravity to current acceleration
-		mVerticalSpeed += mAcceleration; // always applying the current acceleration tp the current speed
-		mVerticalSpeed = Math.min(mVerticalSpeed, MAX_DROP_SPEED); // but capping it to a terminal velocity (science bitch)
+		_macceleration += Constants.GRAVITY * coeficient; // always applying gravity to current acceleration
+		mVerticalSpeed += _macceleration * coeficient; // always applying the current acceleration tp the current speed
+		mVerticalSpeed = Math.min(mVerticalSpeed, Constants.MAX_DROP_SPEED); // but capping it to a terminal velocity (science bitch)
 
-		if(mVerticalSpeed <= (FLAP_POWER)){
-			mCurrentBirdAngle -= BIRD_FLAP_ANGLE_POWER;						
+		if(mVerticalSpeed <= (Constants.FLAP_POWER)){
+			_currentBirdAngle -= Constants.BIRD_FLAP_ANGLE_POWER;
 		}else{
-			mCurrentBirdAngle += FLAP_ANGLE_DRAG;
+			_currentBirdAngle += Constants.FLAP_ANGLE_DRAG;
 		}
 
-		mCurrentBirdAngle = Math.max(mCurrentBirdAngle, BIRD_MAX_FLAP_ANGLE);
-		mCurrentBirdAngle = Math.min(mCurrentBirdAngle, BIRD_MAX_DROP_ANGLE);
+		_currentBirdAngle = Math.max(_currentBirdAngle, Constants.BIRD_MAX_FLAP_ANGLE);
+		_currentBirdAngle = Math.min(_currentBirdAngle, Constants.BIRD_MAX_DROP_ANGLE);
 
 		// now apply bird angle based on current speed
-		mSprite.setRotation(mCurrentBirdAngle);
+		mSprite.setRotation(_currentBirdAngle);
 
 		return newY;
 	}
 
 
-
-
-    public float moveWithoutGravitiy(){
-
-        float newY = mSprite.getY() - mVerticalSpeed; // calculate the birds new height based on the current vertical speed
-        newY = Math.max(newY, 0); // don't allow through the ceiling
-        newY = Math.min(newY, MainActivity.FLOOR_BOUND); // don't allow through the floor
-        mSprite.setY(newY); //apply the new position
-
-        // now calculate the new speed
-        mAcceleration -= GRAVITY; // always applying gravity to current acceleration
-        mVerticalSpeed -= mAcceleration; // always applying the current acceleration tp the current speed
-        mVerticalSpeed = Math.min(mVerticalSpeed, MAX_DROP_SPEED); // but capping it to a terminal velocity (science bitch)
-
-        if(mVerticalSpeed <= (FLAP_POWER)){
-            mCurrentBirdAngle -= BIRD_FLAP_ANGLE_POWER;
-        }else{
-            mCurrentBirdAngle += FLAP_ANGLE_DRAG;
-        }
-
-        mCurrentBirdAngle = Math.max(mCurrentBirdAngle, BIRD_MAX_FLAP_ANGLE);
-        mCurrentBirdAngle = Math.min(mCurrentBirdAngle, BIRD_MAX_DROP_ANGLE);
-
-        // now apply bird angle based on current speed
-        mSprite.setRotation(mCurrentBirdAngle);
-
-        return newY;
-    }
-
 	public void flap(){
-		mVerticalSpeed = (-FLAP_POWER);
-		mAcceleration = 0;
+		mVerticalSpeed = (-Constants.FLAP_POWER);
+		_macceleration = 0;
 		mJumpSound.play();
 	}	
-	
-	// hover stuff	
-	private static float WRAPAROUND_POINT = (float) (2 * Math.PI);
-	
-	private float mHoverStep = 0;
-	
+
 	public void hover(){
 		mHoverStep+=0.13f;	
 		if(mHoverStep > WRAPAROUND_POINT) mHoverStep = 0;
@@ -168,6 +112,25 @@ public class Bird {
 		mSprite.setY(newY);			
 		
 	}
+
+    public static void onCreateResources(SimpleBaseGameActivity activity){
+        // bird
+        mBirdBitmapTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), (int)Constants.BITMAP_WIDTH, (int)Constants.BITMAP_HEIGHT, TextureOptions.NEAREST);
+        mBirdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBirdBitmapTextureAtlas, activity, Constants.BIRDFILENAME, 3, 3);
+        try {
+            mBirdBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
+            mBirdBitmapTextureAtlas.load();
+        } catch (TextureAtlasBuilderException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            mJumpSound = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, Constants.JUMPMUSIC);
+        } catch (final IOException e) {
+            Debug.e(e);
+        }
+
+    }
 
 	public AnimatedSprite getSprite() {
 		return mSprite;

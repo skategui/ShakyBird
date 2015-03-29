@@ -1,6 +1,5 @@
 package shaky;
 
-import android.util.Log;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -14,115 +13,125 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 public class PipePair {
 
+    private Scene _scene;
 
-	float PIPE_WIDTH = MainActivity.CAMERA_WIDTH * 0.18f;
+    private Sprite _upperPipe;
+    private Sprite _upperPipeSection;
+    private Sprite _lowerPipe;
+    private Sprite _lowerPipeSection;
+    private boolean counted = false;
 
-	// upper pipe
-	private static TextureRegion mUpperPipeTexture;
-	private static TextureRegion mUpperPipeSectionTexture;
+
+    private static int _nbrJump = 0;
+    private static int _distance = 220;
+    private static final float PIPE_Y_OFFSET = Constants.CAMERA_WIDTH + 200; // make sure they always spawn way off screen
+
+
+
+    // upper pipe
+	private static TextureRegion _upperPipeTexture;
+	private static TextureRegion _upperPipeSectionTexture;
 
 	//lower pipe
-	private static TextureRegion mLowerPipeTexture;
-	private static TextureRegion mLowerPipeSectionTexture;
+	private static TextureRegion _lowerPipeTexture;
+	private static TextureRegion _lowerPipeSectionTexture;
 
 	public static void onCreateResources(SimpleBaseGameActivity activity){
 
 		// upper pipe		
 		BitmapTextureAtlas upperPipeTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 130, 60, TextureOptions.BILINEAR);
-		mUpperPipeTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(upperPipeTextureAtlas, activity, "pipeupper.png", 0, 0);
+		_upperPipeTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(upperPipeTextureAtlas, activity, Constants.PIPEUPPER, 0, 0);
 		upperPipeTextureAtlas.load();
 
 		// upper pipe section	
 		BitmapTextureAtlas upperPipeSectionTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 120, 1, TextureOptions.BILINEAR);
-		mUpperPipeSectionTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(upperPipeSectionTextureAtlas, activity, "pipesectionupper.png", 0, 0);
+		_upperPipeSectionTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(upperPipeSectionTextureAtlas, activity, Constants.PIPEUPPERSECTION, 0, 0);
 		upperPipeSectionTextureAtlas.load();
 
 
 		// lower pipe		
 		BitmapTextureAtlas lowerPipeTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 130, 60, TextureOptions.BILINEAR);
-		mLowerPipeTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(lowerPipeTextureAtlas, activity, "pipelower.png", 0, 0);
+		_lowerPipeTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(lowerPipeTextureAtlas, activity, Constants.PIPELOWER, 0, 0);
 		lowerPipeTextureAtlas.load();
 
 		// lower pipe section	
 		BitmapTextureAtlas lowerPipeSectionTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 120, 1, TextureOptions.BILINEAR);
-		mLowerPipeSectionTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(lowerPipeSectionTextureAtlas, activity, "pipesectionlower.png", 0, 0);
+		_lowerPipeSectionTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(lowerPipeSectionTextureAtlas, activity, Constants.PIPELOWERSECTION, 0, 0);
 		lowerPipeSectionTextureAtlas.load();
 	}
 
 
-	private Scene mScene;
-
-	private Sprite mUpperPipe;
-	private Sprite mUpperPipeSection;
-	private Sprite mLowerPipe;
-	private Sprite mLowerPipeSection;
-    private static int score = 0;
-    private static int gap = 220;
-
-
-    public static void clearScore()
+    /**
+     * reset variables  once starting a new game
+     */
+    public static void resetGame()
     {
-        score = 0;
-        gap  = 220;
+        _nbrJump = 0;
+        _distance = 220;
     }
 
-	private static final float PIPE_Y_OFFSET = MainActivity.CAMERA_WIDTH + 200; // make sure they always spawn way off screen
-	
+
 	public PipePair(int mOpeningHeight,
-			VertexBufferObjectManager mVertexBufferObjectManager, Scene mScene) {
+			VertexBufferObjectManager mVertexBufferObjectManager, Scene _scene) {
 		super();
-		this.mScene = mScene;
+		this._scene = _scene;
 
 		// upper pipe
-		mUpperPipe = new Sprite(PIPE_Y_OFFSET, mOpeningHeight-gap, 88, 41, mUpperPipeTexture, mVertexBufferObjectManager);
-		mUpperPipe.setZIndex(1);
-		mScene.attachChild(mUpperPipe);
+		_upperPipe = new Sprite(PIPE_Y_OFFSET, mOpeningHeight- _distance, 88, 41, _upperPipeTexture, mVertexBufferObjectManager);
+		_upperPipe.setZIndex(1);
+		_scene.attachChild(_upperPipe);
 
-		mUpperPipeSection = new Sprite(PIPE_Y_OFFSET + 3, 0, 82, mOpeningHeight-gap, mUpperPipeSectionTexture, mVertexBufferObjectManager);
-		mUpperPipeSection.setZIndex(1);
-		mScene.attachChild(mUpperPipeSection);
+		_upperPipeSection = new Sprite(PIPE_Y_OFFSET + 3, 0, 82, mOpeningHeight- _distance, _upperPipeSectionTexture, mVertexBufferObjectManager);
+		_upperPipeSection.setZIndex(1);
+		_scene.attachChild(_upperPipeSection);
 
 		//lower pipe		
-		mLowerPipe = new Sprite(PIPE_Y_OFFSET, mOpeningHeight+gap - 41, 88, 41, mLowerPipeTexture, mVertexBufferObjectManager);
-		mLowerPipe.setZIndex(1);
-		mScene.attachChild(mLowerPipe);
+		_lowerPipe = new Sprite(PIPE_Y_OFFSET, mOpeningHeight+ _distance - 41, 88, 41, _lowerPipeTexture, mVertexBufferObjectManager);
+		_lowerPipe.setZIndex(1);
+		_scene.attachChild(_lowerPipe);
 
-		mLowerPipeSection = new Sprite(PIPE_Y_OFFSET + 3, mOpeningHeight+gap, 82, (644-(mOpeningHeight+gap)), mLowerPipeSectionTexture, mVertexBufferObjectManager);
-		mLowerPipeSection.setZIndex(1);
-		mScene.attachChild(mLowerPipeSection);
-		mScene.sortChildren();
-        score++;
-        if (score % 4 == 0)
+		_lowerPipeSection = new Sprite(PIPE_Y_OFFSET + 3, mOpeningHeight+ _distance, 82, (644-(mOpeningHeight+ _distance)), _lowerPipeSectionTexture, mVertexBufferObjectManager);
+		_lowerPipeSection.setZIndex(1);
+		_scene.attachChild(_lowerPipeSection);
+		_scene.sortChildren();
+
+
+        changeDifficulty();
+    }
+
+    private void changeDifficulty()
+    {
+        _nbrJump++;
+        if (_nbrJump % 4 == 0)
         {
-            gap -= 20;
+            _distance -= 20;
         }
     }
 
 
 	public void move(float offset){
-		mUpperPipe.setPosition(mUpperPipe.getX() - offset, mUpperPipe.getY());
-		mUpperPipeSection.setPosition(mUpperPipeSection.getX() - offset, mUpperPipeSection.getY());
+		_upperPipe.setPosition(_upperPipe.getX() - offset, _upperPipe.getY());
+		_upperPipeSection.setPosition(_upperPipeSection.getX() - offset, _upperPipeSection.getY());
 
-		mLowerPipe.setPosition(mLowerPipe.getX() - offset, mLowerPipe.getY());
-		mLowerPipeSection.setPosition(mLowerPipeSection.getX() - offset, mLowerPipeSection.getY());	
+		_lowerPipe.setPosition(_lowerPipe.getX() - offset, _lowerPipe.getY());
+		_lowerPipeSection.setPosition(_lowerPipeSection.getX() - offset, _lowerPipeSection.getY());
 
 	}
 
 	public boolean isOnScreen(){
 
-		if(mUpperPipe.getX() < -200){
+		if(_upperPipe.getX() < -200){
 			return false;
 		}
 
 		return true;		
 	}
 	
-	boolean counted = false;
-	
+
 	public boolean isCleared(float birdXOffset){
 		
 		if(!counted){
-			if(mUpperPipe.getX()<(birdXOffset - (Bird.BIRD_WIDTH/2))){
+			if(_upperPipe.getX()<(birdXOffset - (Constants.BIRD_WIDTH / 2))){
 				counted = true; // make sure we don't count this again
 				return true;
 			}
@@ -133,23 +142,26 @@ public class PipePair {
 	}
 
 
+    /**
+     * clean scene
+     */
 	public void destroy(){
-		mScene.detachChild(mUpperPipe);
-		mScene.detachChild(mUpperPipeSection);
-		mScene.detachChild(mLowerPipe);
-		mScene.detachChild(mLowerPipeSection);
+		_scene.detachChild(_upperPipe);
+		_scene.detachChild(_upperPipeSection);
+		_scene.detachChild(_lowerPipe);
+		_scene.detachChild(_lowerPipeSection);
 
 	}
 
 	public boolean collidesWith(Sprite bird){
 
-		if(mUpperPipe.collidesWith(bird))
+		if(_upperPipe.collidesWith(bird))
             return true;
-		if(mUpperPipeSection.collidesWith(bird))
+		if(_upperPipeSection.collidesWith(bird))
             return true;
-		if(mLowerPipe.collidesWith(bird))
+		if(_lowerPipe.collidesWith(bird))
             return true;
-		if(mLowerPipeSection.collidesWith(bird))
+		if(_lowerPipeSection.collidesWith(bird))
             return true;
 		return false;
 

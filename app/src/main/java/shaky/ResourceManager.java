@@ -49,9 +49,9 @@ public class ResourceManager {
 	}
 	
 	public void createResources(){
-		SoundFactory.setAssetBasePath("sound/");
-		MusicFactory.setAssetBasePath("sound/");
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("img/");		
+		SoundFactory.setAssetBasePath(Constants.SOUND_PATH);
+		MusicFactory.setAssetBasePath(Constants.SOUND_PATH);
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(Constants.IMG_PATH);
 
 		// background
 		mBackgroundBitmapTextureAtlas = new BitmapTextureAtlas(context.getTextureManager(), 718, 1184, 
@@ -59,23 +59,23 @@ public class ResourceManager {
         mBackgroundBitmapTextureAtlas2 = new BitmapTextureAtlas(context.getTextureManager(), 718, 1184,
                 TextureOptions.NEAREST_PREMULTIPLYALPHA);
 		mBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(mBackgroundBitmapTextureAtlas, context.getAssets(), "background480.png", 0, 0);
+				.createFromAsset(mBackgroundBitmapTextureAtlas, context.getAssets(), Constants.BACKGROUND_EARTH, 0, 0);
 
         mBackgroundTextureSpace = BitmapTextureAtlasTextureRegionFactory
-                .createFromAsset(mBackgroundBitmapTextureAtlas2, context.getAssets(), "background_space2.png", 0, 0);
+                .createFromAsset(mBackgroundBitmapTextureAtlas2, context.getAssets(), Constants.BACKGROUND_SPACE, 0, 0);
 
 		mBackgroundBitmapTextureAtlas.load();
         mBackgroundBitmapTextureAtlas2.load();
 
         // instructions img
 		BitmapTextureAtlas instructionsTextureAtlas = new BitmapTextureAtlas(context.getTextureManager(), 285, 245, TextureOptions.BILINEAR);
-		mInstructionsTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(instructionsTextureAtlas, context, "instructions.png", 0, 0);
+		mInstructionsTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(instructionsTextureAtlas, context, Constants.INSTRUCTION, 0, 0);
 		instructionsTextureAtlas.load();
 
 		PipePair.onCreateResources(context); // let it sort its own resources out
 		Bird.onCreateResources(context);
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(), "flappy.ttf");
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(), Constants.FONTNAME);
 
 		// score board		
 		final ITexture scoreFontTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
@@ -93,15 +93,15 @@ public class ResourceManager {
 		mCopyFont = new StrokeFont(context.getFontManager(), copyFontTexture, typeFace, 20, true, Color.WHITE, 2, Color.BLACK);
 		mCopyFont.load();
 
-		// (c) you suck text
+		// Fail message
 		final ITexture youSuckTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
 		mYouSuckFont = new StrokeFont(context.getFontManager(), youSuckTexture, typeFace, 80, true, Color.WHITE, 2, Color.BLACK);
 		mYouSuckFont.load();	
 
 		// sounds
 		try {			
-			mScoreSound = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, "score.ogg");
-			mDieSound = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, "gameover.ogg");			
+			mScoreSound = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.SCOREMUSIC);
+			mDieSound = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.GAMEOVERMUSHC);
 		} catch (final IOException e) {
 			Debug.e(e);
 		}	
@@ -109,7 +109,7 @@ public class ResourceManager {
 		// music
 
 		try {
-			mMusic = MusicFactory.createMusicFromAsset(context.getMusicManager(), context, "song.ogg");
+			mMusic = MusicFactory.createMusicFromAsset(context.getMusicManager(), context, Constants.MUSIC);
 			mMusic.setVolume(0.1f);
 			mMusic.setLooping(true);
 		} catch (final IOException e) {

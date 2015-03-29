@@ -66,8 +66,8 @@ public class SceneManager {
         mScene.setBackgroundEnabled(true);
 
         // bird
-        float birdStartXOffset = (MainActivity.CAMERA_WIDTH / 4) - (Bird.BIRD_WIDTH / 4);
-        float birdYOffset = (MainActivity.CAMERA_HEIGHT / 2) - (Bird.BIRD_HEIGHT / 4);
+        float birdStartXOffset = (Constants.CAMERA_WIDTH / 4) - (Constants.BIRD_WIDTH / 4);
+        float birdYOffset = (Constants.CAMERA_HEIGHT / 2) - (Constants.BIRD_HEIGHT / 4);
         _player = new Bird(birdStartXOffset, birdYOffset, mContext.getVertexBufferObjectManager(), mScene);
 
         //score
@@ -76,7 +76,7 @@ public class SceneManager {
         mScene.attachChild(_scoreText);
 
         // get ready text
-        _readyText = new Text(0, 220, mResourceManager.getmGetReadyFont(), "Get Ready!", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        _readyText = new Text(0, 220, mResourceManager.getmGetReadyFont(), Constants.GETREADY, new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
         _readyText.setZIndex(3);
         mScene.attachChild(_readyText);
         centerText(_readyText);
@@ -90,35 +90,35 @@ public class SceneManager {
         _instructionSprite.setY(_instructionSprite.getY() + 20);
 
         // you suck text
-        _failText = new Text(0, MainActivity.CAMERA_HEIGHT / 2 - 100, mResourceManager.getmYouSuckFont()
-                , " Failed !", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        _failText = new Text(0, Constants.CAMERA_HEIGHT / 2 - 100, mResourceManager.getmYouSuckFont()
+                , Constants.FAILED, new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
         _failText.setZIndex(3);
         centerText(_failText);
 
 
-        _gravityText = new Text(0, MainActivity.CAMERA_HEIGHT / 2 - 100, mResourceManager.getmYouSuckFont()
+        _gravityText = new Text(0, Constants.CAMERA_HEIGHT / 2 - 100, mResourceManager.getmYouSuckFont()
                 , " Invertion of Gravity !", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
         _gravityText.setZIndex(3);
         centerText(_gravityText);
     }
 	
 	public static void centerSprite(Sprite sprite){
-		sprite.setX((MainActivity.CAMERA_WIDTH / 2) - (sprite.getWidth() / 2));	
-		sprite.setY((MainActivity.CAMERA_HEIGHT / 2) - (sprite.getHeight() / 2));	
+		sprite.setX((Constants.CAMERA_WIDTH / 2) - (sprite.getWidth() / 2));
+		sprite.setY((Constants.CAMERA_HEIGHT / 2) - (sprite.getHeight() / 2));
 	}
 	
 	public void displayCurrentScore(int score){		
-			_scoreText.setText("" + score);
+			_scoreText.setText(String.valueOf(score));
 			centerText(_scoreText);
 	}
 	
 	public void displayBestScore(int score){
-		_scoreText.setText("Best - " + score);
+		_scoreText.setText(Constants.BESTSCORE + score);
 		centerText(_scoreText);
 	}
 
 	private void centerText(Text text){
-		text.setX((MainActivity.CAMERA_WIDTH / 2) - (text.getWidth() / 2));		
+		text.setX((Constants.CAMERA_WIDTH / 2) - (text.getWidth() / 2));
 	}
 
     public Bird getBird()
@@ -126,9 +126,6 @@ public class SceneManager {
         return _player;
     }
 
-    public Text get_scoreText() {
-        return _scoreText;
-    }
 
     public Text get_readyText() {
         return _readyText;
