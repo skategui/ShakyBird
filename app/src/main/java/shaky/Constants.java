@@ -90,8 +90,10 @@ public class Constants {
      */
     public static final String MUSIC = "song.ogg";
 
-    public static final String GETREADY = "Get Ready!";
+    public static final String SHAKYBIRD = "Shaky Bird";
+    public static final String MAKEITSHAKE = "Make it shake !";
     public static final String FAILED = "Failed !";
+    public static final String INVGRAVITY = "Gravity's invertion!";
     public static final String BESTSCORE = "Best - ";
 
     public static final String PIPEUPPER = "pipeupper.png";

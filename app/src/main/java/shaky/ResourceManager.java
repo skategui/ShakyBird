@@ -20,13 +20,16 @@ import org.andengine.util.debug.Debug;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
+import com.shakybird.R;
+
 public class ResourceManager {
 
 	// fonts
-	private Font mScoreFont;
-    private Font mGetReadyFont;
+	private Font _scoreFont;
+    private Font _titleFont;
     private Font mCopyFont;
-    private StrokeFont mYouSuckFont;
+    private StrokeFont _failFont;
+    private StrokeFont _gravityFont;
 
 	// sounds
     private Sound mScoreSound;
@@ -79,13 +82,14 @@ public class ResourceManager {
 
 		// score board		
 		final ITexture scoreFontTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-		mScoreFont = new StrokeFont(context.getFontManager(), scoreFontTexture, typeFace, 60, true, Color.WHITE, 2, Color.BLACK);
-		mScoreFont.load();
+		_scoreFont = new StrokeFont(context.getFontManager(), scoreFontTexture, typeFace, 45, true, Color.WHITE, 2, Color.BLACK);
+		_scoreFont.load();
 
-		// get ready text	
-		final ITexture getReadyFontTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-		mGetReadyFont = new StrokeFont(context.getFontManager(), getReadyFontTexture, typeFace, 60, true, Color.WHITE, 2, Color.BLACK);
-		mGetReadyFont.load();
+		// title texture
+		final ITexture titleTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
+		_titleFont = new StrokeFont(context.getFontManager(), titleTexture, typeFace, 60, true,
+                context.getResources().getColor(R.color.custom_blue_trans), 2, Color.BLACK);
+		_titleFont.load();
 
 
 		// (c) text
@@ -94,9 +98,15 @@ public class ResourceManager {
 		mCopyFont.load();
 
 		// Fail message
-		final ITexture youSuckTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-		mYouSuckFont = new StrokeFont(context.getFontManager(), youSuckTexture, typeFace, 80, true, Color.WHITE, 2, Color.BLACK);
-		mYouSuckFont.load();	
+		final ITexture FailedTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
+		_failFont = new StrokeFont(context.getFontManager(), FailedTexture, typeFace, 80, true, Color.WHITE, 2, Color.BLACK);
+		_failFont.load();
+
+
+        // inv Gravity message
+        final ITexture GravityTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
+        _gravityFont = new StrokeFont(context.getFontManager(), GravityTexture, typeFace, 40, true, Color.WHITE, 2, Color.BLACK);
+        _gravityFont.load();
 
 		// sounds
 		try {			
@@ -139,17 +149,21 @@ public class ResourceManager {
         return mBackgroundTextureSpace;
     }
 
-    public Font getmScoreFont() {
-        return mScoreFont;
+    public Font getScoreFont() {
+        return _scoreFont;
     }
 
-    public Font getmGetReadyFont() {
-        return mGetReadyFont;
+    public Font getTitleFont() {
+        return _titleFont;
     }
 
 
-    public StrokeFont getmYouSuckFont() {
-        return mYouSuckFont;
+    public StrokeFont getGravityFont() {
+        return _gravityFont;
+    }
+
+    public StrokeFont getFailedFont() {
+        return _failFont;
     }
 
     public TextureRegion getmInstructionsTexture() {

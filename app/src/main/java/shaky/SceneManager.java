@@ -18,7 +18,8 @@ public class SceneManager {
 
 	// text objects
     private Text _scoreText;
-    private Text _readyText;
+    private Text _appNameText;
+    private Text _makeItText;
     private Sprite _instructionSprite;
     private Text _failText;
     private Text _gravityText;
@@ -71,16 +72,20 @@ public class SceneManager {
         _player = new Bird(birdStartXOffset, birdYOffset, mContext.getVertexBufferObjectManager(), mScene);
 
         //score
-        _scoreText = new Text(0, 60, mResourceManager.getmScoreFont(), "        ", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        _scoreText = new Text(0,720, mResourceManager.getScoreFont(), "        ", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
         _scoreText.setZIndex(3);
         mScene.attachChild(_scoreText);
 
-        // get ready text
-        _readyText = new Text(0, 220, mResourceManager.getmGetReadyFont(), Constants.GETREADY, new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
-        _readyText.setZIndex(3);
-        mScene.attachChild(_readyText);
-        centerText(_readyText);
+        // App Name
+        _appNameText = new Text(0, 100, mResourceManager.getTitleFont(), Constants.SHAKYBIRD, new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        _appNameText.setZIndex(3);
+        mScene.attachChild(_appNameText);
+        centerText(_appNameText);
 
+        _makeItText = new Text(0, 170, mResourceManager.getGravityFont(), Constants.MAKEITSHAKE, new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        _makeItText.setZIndex(3);
+        mScene.attachChild(_makeItText);
+        centerText(_makeItText);
 
         // instructions image
         _instructionSprite = new Sprite(0, 0, 200, 172, mResourceManager.getmInstructionsTexture(), mContext.getVertexBufferObjectManager());
@@ -89,15 +94,15 @@ public class SceneManager {
         centerSprite(_instructionSprite);
         _instructionSprite.setY(_instructionSprite.getY() + 20);
 
-        // you suck text
-        _failText = new Text(0, Constants.CAMERA_HEIGHT / 2 - 100, mResourceManager.getmYouSuckFont()
+        // you failed
+        _failText = new Text(0, Constants.CAMERA_HEIGHT / 2 - 100, mResourceManager.getFailedFont()
                 , Constants.FAILED, new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
         _failText.setZIndex(3);
         centerText(_failText);
 
-
-        _gravityText = new Text(0, Constants.CAMERA_HEIGHT / 2 - 100, mResourceManager.getmYouSuckFont()
-                , " Invertion of Gravity !", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+          // create special font size
+        _gravityText = new Text(0, Constants.CAMERA_HEIGHT / 2 - 100, mResourceManager.getGravityFont()
+                , Constants.INVGRAVITY, new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
         _gravityText.setZIndex(3);
         centerText(_gravityText);
     }
@@ -127,15 +132,25 @@ public class SceneManager {
     }
 
 
-    public Text get_readyText() {
-        return _readyText;
+    public Text getAppText() {
+        return _appNameText;
     }
 
-    public Sprite get_instructionSprite() {
+    public Sprite getInstructionSprite() {
         return _instructionSprite;
     }
 
-    public Text get_failText() {
+    public Text getFailText() {
         return _failText;
+    }
+
+    public Text getGravityText()
+    {
+        return _gravityText;
+    }
+
+    public Text getMakeItText()
+    {
+        return _makeItText;
     }
 }
