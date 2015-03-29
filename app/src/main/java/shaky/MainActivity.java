@@ -39,15 +39,14 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 
 	// objects
 	private TimerHandler mTimer;
-	private SceneManager mSceneManager;
-	private ResourceManager mResourceManager;	
-	private Scene mSceneHeart;
-    private Scene mSceneSpace;
+	private SceneManager _sceneManager;
+	private ResourceManager _resourceManager;
+	private Scene _scene;
     private boolean withGravity = false;
     private Camera mCamera;
 
 	// sprites
-	private ParallaxBackground mBackground;
+	private ParallaxBackground _background;
 	private ArrayList<PipePair> pipes = new ArrayList<PipePair>();
 
 	// game variables
@@ -58,9 +57,9 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
     private SensorManager sensorMgr;
     private long lastUpdate;
     private float x,y,z, last_x, last_y, last_z;
-    private static final int SHAKE_THRESHOLD = 400;
+    private static final int SHAKE_THRESHOLD = 500;
 
-    boolean lastwithGravity = false;
+    private boolean lastwithGravity = false;
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -99,15 +98,15 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 			private void ready(){
 				
 				mCurrentWorldPosition -= SCROLL_SPEED;	
-				mSceneManager.getBird().hover();
+				_sceneManager.getBird().hover();
 				
-				if(!mResourceManager.mMusic.isPlaying()){
-					mResourceManager.mMusic.play();
+				if(!_resourceManager.getmMusic().isPlaying()){
+					_resourceManager.getmMusic().play();
 				}
 			}
 
 			private void die(){
-				float newY = mSceneManager.getBird().moveWithGravity(); // get the bird to update itself
+				float newY = _sceneManager.getBird().moveWithGravity(); // get the bird to update itself
 				if(newY >= FLOOR_BOUND) dead();
 			}
 
@@ -124,12 +123,22 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
                 withGravity = false;
                 if (withGravity == true)
                 {
-                    newY = mSceneManager.getBird().moveWithoutGravitiy(); // get the bird to update itself
+                    if (lastwithGravity == false)
+                    {
+                        _sceneManager.changeBackground(withGravity);
+                        lastwithGravity = true;
+                    }
+                    newY = _sceneManager.getBird().moveWithoutGravitiy(); // get the bird to update itself
                 }
                 else
                 {
 
-                    newY = mSceneManager.getBird().moveWithGravity(); // get the bird to update itself
+                    if (lastwithGravity == true)
+                    {
+                        _sceneManager.changeBackground(withGravity);
+                        lastwithGravity = false;
+                    }
+                    newY = _sceneManager.getBird().moveWithGravity(); // get the bird to update itself
                 }
 				if(newY >= FLOOR_BOUND) gameOver(); // check if it game over from twatting the floor
 
@@ -146,7 +155,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 					PipePair pipe = pipes.get(i);
 					if(pipe.isOnScreen()){
 						pipe.move(SCROLL_SPEED);
-						if(pipe.collidesWith(mSceneManager.getBird().getSprite())){
+						if(pipe.collidesWith(_sceneManager.getBird().getSprite())){
 							gameOver();
 						}
 
@@ -191,8 +200,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
                 if (speed > SHAKE_THRESHOLD) {
                     Log.e("sensor", "shake detected w/ speed: " + speed);
 
-                    if (speed > 2 * SHAKE_THRESHOLD)
-                        makeItJump();
                     makeItJump();
 
                 }
@@ -208,7 +215,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
         switch(GAME_STATE){
 
             case PLAYING:
-                mSceneManager.getBird().flap();
+                _sceneManager.getBird().flap();
                 break;
         }
     }
@@ -220,23 +227,23 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
     }
 
     protected void spawnNewPipe() {
-		int Min = 250; // 150
-		int Max = 450; // 450
+		int Min = 250;
+		int Max = 450;
 		int spawn = Min + (int)(Math.random() * ((Max - Min) + 1));
-		PipePair newPipes = new PipePair(spawn, this.getVertexBufferObjectManager(), getSCene());
+		PipePair newPipes = new PipePair(spawn, this.getVertexBufferObjectManager(), _scene);
 		pipes.add(newPipes);		
 	}
 		
 	@Override
 	protected void onCreateResources() {
-		mResourceManager = new ResourceManager(this);
-		mResourceManager.createResources();
+		_resourceManager = new ResourceManager(this);
+		_resourceManager.createResources();
 	}
 
 	@Override
 	protected Scene onCreateScene() {				
 
-		mBackground = new ParallaxBackground(82/255f, 190/255f, 206/255f){
+		_background = new ParallaxBackground(82/255f, 190/255f, 206/255f){
 
 			float prevX = 0;
 			float parallaxValueOffset = 0;
@@ -263,18 +270,18 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 			}
 		};
 
-		mSceneManager = new SceneManager(this, mResourceManager, mBackground);
+		_sceneManager = new SceneManager(this, _resourceManager, _background);
 
-        mSceneHeart= mSceneManager.createSceneHeart();
-        //mSceneSpace = mSceneManager.createSceneSpace();
+        _scene = _sceneManager.createScene();
+        //mSceneSpace = _sceneManager.createSceneSpace();
 
-        defineListener(mSceneHeart);
+        defineListener(_scene);
         //defineListener(mSceneSpace);
 
 
 		updateScore();
 
-		return getSCene();
+		return _scene;
 	}
 
     private void defineListener(Scene scene)
@@ -291,10 +298,11 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
                         case READY:
                             // PipePair.resetPosition();
                             startPlaying();
+
                             break;
 
                         case PLAYING:
-                            mSceneManager.getBird().flap();
+                            _sceneManager.getBird().flap();
                             break;
 
                         case DEAD:
@@ -309,16 +317,16 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 
 	private void score(){
 		_score++;
-		mResourceManager.mScoreSound.play();
+		_resourceManager.getmScoreSound().play();
 		updateScore();
 	}
 
 	private void updateScore(){
 
 		if(GAME_STATE == eState.READY){
-			mSceneManager.displayBestScore(ScoreManager.GetBestScore(this));
+			_sceneManager.displayBestScore(ScoreManager.GetBestScore(this));
 		}else{
-			mSceneManager.displayCurrentScore(_score);
+			_sceneManager.displayCurrentScore(_score);
 		}		
 	}
 	
@@ -326,8 +334,8 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 
     private void restartGame(){
         GAME_STATE = eState.READY;
-        mResourceManager.mMusic.resume();
-        mSceneManager.getBird().restart();
+        _resourceManager.getmMusic().resume();
+        _sceneManager.getBird().restart();
         _score = 0;
         updateScore();
 
@@ -338,38 +346,31 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
         pipes.clear();
         PipePair.clearScore();
 
-        getSCene().attachChild(mSceneManager.getmGetReadyText());
-        getSCene().attachChild(mSceneManager.getmInstructionsSprite());
-        //getSCene().attachChild(mSceneManager.mCopyText);
+        _scene.attachChild(_sceneManager.get_readyText());
+        _scene.attachChild(_sceneManager.get_instructionSprite());
+        //_scene.attachChild(_sceneManager.mCopyText);
     }
 
 	private void startPlaying(){
 		
 		GAME_STATE = eState.PLAYING;	
 		
-		mResourceManager.mMusic.pause();
-		mResourceManager.mMusic.seekTo(0);
-		getSCene().detachChild(mSceneManager.getmGetReadyText());
-		getSCene().detachChild(mSceneManager.getmInstructionsSprite());
-		//getSCene().detachChild(mSceneManager.mCopyText);
+		_resourceManager.getmMusic().pause();
+		_resourceManager.getmMusic().seekTo(0);
+		_scene.detachChild(_sceneManager.get_readyText());
+		_scene.detachChild(_sceneManager.get_instructionSprite());
 		updateScore();
-		mSceneManager.getBird().flap();
+		_sceneManager.getBird().flap();
 	}
 
-    private Scene getSCene()
-    {
-      //  if (withGravity == true)
-        //    return mSceneSpace;
-        return mSceneHeart;
-    }
 
 	private void gameOver(){
 		
 		GAME_STATE = eState.DYING;
 		
-		mResourceManager.mDieSound.play();
-		getSCene().attachChild(mSceneManager.getmYouSuckText());
-		mSceneManager.getBird().getSprite().stopAnimation();
+		_resourceManager.getmDieSound().play();
+		_scene.attachChild(_sceneManager.get_failText());
+		_sceneManager.getBird().getSprite().stopAnimation();
 		ScoreManager.SetBestScore(this, _score);
 	}
 
@@ -380,21 +381,26 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 		mTimer = new TimerHandler(1.6f, false, new ITimerCallback() {
 			@Override
 			public void onTimePassed(final TimerHandler pTimerHandler) {
-				getSCene().detachChild(mSceneManager.getmYouSuckText());
+				_scene.detachChild(_sceneManager.get_failText());
 				restartGame();
-				getSCene().unregisterUpdateHandler(mTimer);
+				_scene.unregisterUpdateHandler(mTimer);
 			}
 		});
 
-		getSCene().registerUpdateHandler(mTimer);
+		_scene.registerUpdateHandler(mTimer);
 	}
+
+    private void invertionGravity()
+    {
+
+    }
 
 
 
 	@Override
 	public final void onPause() {
 		super.onPause();
-		mResourceManager.mMusic.pause();		
+		_resourceManager.getmMusic().pause();
 	}
 
 }

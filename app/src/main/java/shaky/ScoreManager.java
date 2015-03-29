@@ -7,8 +7,7 @@ import android.content.SharedPreferences.Editor;
 public class ScoreManager {
 
 	public static int GetBestScore(Context context){
-		SharedPreferences prefs = context.getSharedPreferences(
-				context.getPackageName() + ".score", Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences( context.getPackageName() + ".score", Context.MODE_PRIVATE);
 
 		return prefs.getInt("bestscore", 0);
 	}

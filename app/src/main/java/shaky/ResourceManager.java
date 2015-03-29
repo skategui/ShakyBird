@@ -23,24 +23,26 @@ import android.graphics.Typeface;
 public class ResourceManager {
 
 	// fonts
-	Font mScoreFont;	
-	Font mGetReadyFont;	
-	Font mCopyFont;
-	StrokeFont mYouSuckFont;
+	private Font mScoreFont;
+    private Font mGetReadyFont;
+    private Font mCopyFont;
+    private StrokeFont mYouSuckFont;
 
 	// sounds
-	Sound mScoreSound;
-	Sound mDieSound;	
-	Music mMusic;	
+    private Sound mScoreSound;
+    private Sound mDieSound;
+    private Music mMusic;
 
 	//textures
-	BitmapTextureAtlas mBackgroundBitmapTextureAtlas;
-    BitmapTextureAtlas mBackgroundBitmapTextureAtlas2;
-	ITextureRegion mBackgroundTextureRegion;
-    ITextureRegion mBackgroundTextureSpace;
-	TextureRegion mInstructionsTexture;
+    private BitmapTextureAtlas mBackgroundBitmapTextureAtlas;
+    private BitmapTextureAtlas mBackgroundBitmapTextureAtlas2;
+    private ITextureRegion mBackgroundTextureRegion;
+    private ITextureRegion mBackgroundTextureSpace;
+    private TextureRegion mInstructionsTexture;
 
-	private SimpleBaseGameActivity context;
+
+
+    private SimpleBaseGameActivity context;
 	
 	public ResourceManager(SimpleBaseGameActivity context){
 		this.context = context;
@@ -114,4 +116,43 @@ public class ResourceManager {
 			Debug.e("Error", e);
 		}
 	}
+
+    public Sound getmScoreSound() {
+        return mScoreSound;
+    }
+
+    public Sound getmDieSound() {
+        return mDieSound;
+    }
+
+    public Music getmMusic() {
+        return mMusic;
+    }
+
+
+
+    public ITextureRegion getmBackgroundTextureRegion() {
+        return mBackgroundTextureRegion;
+    }
+
+    public ITextureRegion getmBackgroundTextureSpace() {
+        return mBackgroundTextureSpace;
+    }
+
+    public Font getmScoreFont() {
+        return mScoreFont;
+    }
+
+    public Font getmGetReadyFont() {
+        return mGetReadyFont;
+    }
+
+
+    public StrokeFont getmYouSuckFont() {
+        return mYouSuckFont;
+    }
+
+    public TextureRegion getmInstructionsTexture() {
+        return mInstructionsTexture;
+    }
 }

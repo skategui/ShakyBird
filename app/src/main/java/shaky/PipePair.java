@@ -16,7 +16,6 @@ public class PipePair {
 
 
 	float PIPE_WIDTH = MainActivity.CAMERA_WIDTH * 0.18f;
-	float PIPE_HEIGHT = PIPE_WIDTH * 0.46f;
 
 	// upper pipe
 	private static TextureRegion mUpperPipeTexture;
@@ -50,10 +49,7 @@ public class PipePair {
 		lowerPipeSectionTextureAtlas.load();
 	}
 
-	private float mOpeningHeight;
-	private float mCurrentPosition;
 
-	private VertexBufferObjectManager mVertexBufferObjectManager;
 	private Scene mScene;
 
 	private Sprite mUpperPipe;
@@ -75,8 +71,6 @@ public class PipePair {
 	public PipePair(int mOpeningHeight,
 			VertexBufferObjectManager mVertexBufferObjectManager, Scene mScene) {
 		super();
-		this.mOpeningHeight = mOpeningHeight;
-		this.mVertexBufferObjectManager = mVertexBufferObjectManager;
 		this.mScene = mScene;
 
 		// upper pipe
@@ -160,27 +154,5 @@ public class PipePair {
 		return false;
 
 	}
-
-	private boolean collidesWithCircle(float centerX, float centerY,
-			float centerX1, float centerY1, float radius) {
-
-		// pythagorus
-		double a = centerX - centerX1;
-		double b = centerY - centerY1;
-		double c = (a * a) + (b * b);
-		double distance = Math.sqrt(c);
-
-		//radius*2 - because its the center of both circles
-		if (distance <= radius*2){  
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-
-
-
 
 }

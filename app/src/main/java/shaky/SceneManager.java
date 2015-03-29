@@ -17,12 +17,16 @@ public class SceneManager {
 	private ParallaxBackground mParallaxBackground;
 
 	// text objects
-    private Text mScoreText;
-    private Text mGetReadyText;
-    private Sprite mInstructionsSprite;
-    private Text mYouSuckText;
+    private Text _scoreText;
+    private Text _readyText;
+    private Sprite _instructionSprite;
+    private Text _failText;
+    private Text _gravityText;
 
-    private Bird mBird;
+    private Sprite _spaceBackground;
+    private Sprite _heartBackground;
+
+    private Bird _player;
 
 	public SceneManager(SimpleBaseGameActivity context, ResourceManager resourceManager, ParallaxBackground parallaxBackground){
 		this.mContext = context;	
@@ -31,29 +35,29 @@ public class SceneManager {
 	}
 
 
-    public Scene createSceneSpace()
-    {
-        Scene mScene = new Scene();
-        VertexBufferObjectManager vbo = mContext.getVertexBufferObjectManager();
-        Sprite backgroundSprite = new Sprite(0, 0 , mResourceManager.mBackgroundTextureSpace, vbo);
-        mParallaxBackground.attachParallaxEntity(new ParallaxEntity(1, backgroundSprite));
-
-        addItemOnscene(mScene);
-        return mScene;
-    }
-
-		
-	public Scene createSceneHeart(){
+	public Scene createScene(){
 
         Scene mScene = new Scene();
         VertexBufferObjectManager vbo = mContext.getVertexBufferObjectManager();
-        Sprite backgroundSprite = new Sprite(0, 0 , mResourceManager.mBackgroundTextureRegion, vbo);
-        mParallaxBackground.attachParallaxEntity(new ParallaxEntity(1, backgroundSprite));
+
+        _heartBackground = new Sprite(0, 0 , mResourceManager.getmBackgroundTextureRegion(), vbo);
+        _spaceBackground = new Sprite(0, 0 , mResourceManager.getmBackgroundTextureSpace(), vbo);
+
+
+        mParallaxBackground.attachParallaxEntity(new ParallaxEntity(1, _heartBackground));
 
         addItemOnscene(mScene);
-
 		return mScene;
 	}
+
+    public boolean changeBackground(boolean isInSpace)
+    {
+        if (isInSpace == false)
+            mParallaxBackground.attachParallaxEntity(new ParallaxEntity(1, _heartBackground));
+        else
+            mParallaxBackground.attachParallaxEntity(new ParallaxEntity(1, _spaceBackground));
+        return isInSpace;
+    }
 
 
     public void addItemOnscene(Scene mScene)
@@ -64,30 +68,38 @@ public class SceneManager {
         // bird
         float birdStartXOffset = (MainActivity.CAMERA_WIDTH / 4) - (Bird.BIRD_WIDTH / 4);
         float birdYOffset = (MainActivity.CAMERA_HEIGHT / 2) - (Bird.BIRD_HEIGHT / 4);
-        mBird = new Bird(birdStartXOffset, birdYOffset, mContext.getVertexBufferObjectManager(), mScene);
+        _player = new Bird(birdStartXOffset, birdYOffset, mContext.getVertexBufferObjectManager(), mScene);
 
         //score
-        mScoreText = new Text(0, 60, mResourceManager.mScoreFont, "        ", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
-        mScoreText.setZIndex(3);
-        mScene.attachChild(mScoreText);
+        _scoreText = new Text(0, 60, mResourceManager.getmScoreFont(), "        ", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        _scoreText.setZIndex(3);
+        mScene.attachChild(_scoreText);
 
         // get ready text
-        mGetReadyText = new Text(0, 220, mResourceManager.mGetReadyFont, "Get Ready!", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
-        mGetReadyText.setZIndex(3);
-        mScene.attachChild(mGetReadyText);
-        centerText(mGetReadyText);
+        _readyText = new Text(0, 220, mResourceManager.getmGetReadyFont(), "Get Ready!", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        _readyText.setZIndex(3);
+        mScene.attachChild(_readyText);
+        centerText(_readyText);
+
 
         // instructions image
-        mInstructionsSprite = new Sprite(0, 0, 200, 172, mResourceManager.mInstructionsTexture, mContext.getVertexBufferObjectManager());
-        mInstructionsSprite.setZIndex(3);
-        mScene.attachChild(mInstructionsSprite);
-        centerSprite(mInstructionsSprite);
-        mInstructionsSprite.setY(mInstructionsSprite.getY() + 20);
+        _instructionSprite = new Sprite(0, 0, 200, 172, mResourceManager.getmInstructionsTexture(), mContext.getVertexBufferObjectManager());
+        _instructionSprite.setZIndex(3);
+        mScene.attachChild(_instructionSprite);
+        centerSprite(_instructionSprite);
+        _instructionSprite.setY(_instructionSprite.getY() + 20);
 
         // you suck text
-        mYouSuckText = new Text(0, MainActivity.CAMERA_HEIGHT / 2 - 100, mResourceManager.mYouSuckFont, " Failed !", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
-        mYouSuckText.setZIndex(3);
-        centerText(mYouSuckText);
+        _failText = new Text(0, MainActivity.CAMERA_HEIGHT / 2 - 100, mResourceManager.getmYouSuckFont()
+                , " Failed !", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        _failText.setZIndex(3);
+        centerText(_failText);
+
+
+        _gravityText = new Text(0, MainActivity.CAMERA_HEIGHT / 2 - 100, mResourceManager.getmYouSuckFont()
+                , " Invertion of Gravity !", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+        _gravityText.setZIndex(3);
+        centerText(_gravityText);
     }
 	
 	public static void centerSprite(Sprite sprite){
@@ -96,13 +108,13 @@ public class SceneManager {
 	}
 	
 	public void displayCurrentScore(int score){		
-			mScoreText.setText("" + score);
-			centerText(mScoreText);				
+			_scoreText.setText("" + score);
+			centerText(_scoreText);
 	}
 	
 	public void displayBestScore(int score){
-		mScoreText.setText("Best - " + score);
-		centerText(mScoreText);
+		_scoreText.setText("Best - " + score);
+		centerText(_scoreText);
 	}
 
 	private void centerText(Text text){
@@ -111,22 +123,22 @@ public class SceneManager {
 
     public Bird getBird()
     {
-        return mBird;
+        return _player;
     }
 
-    public Text getmScoreText() {
-        return mScoreText;
+    public Text get_scoreText() {
+        return _scoreText;
     }
 
-    public Text getmGetReadyText() {
-        return mGetReadyText;
+    public Text get_readyText() {
+        return _readyText;
     }
 
-    public Sprite getmInstructionsSprite() {
-        return mInstructionsSprite;
+    public Sprite get_instructionSprite() {
+        return _instructionSprite;
     }
 
-    public Text getmYouSuckText() {
-        return mYouSuckText;
+    public Text get_failText() {
+        return _failText;
     }
 }
