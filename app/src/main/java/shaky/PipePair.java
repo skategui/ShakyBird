@@ -40,23 +40,23 @@ public class PipePair {
 
 		// upper pipe		
 		BitmapTextureAtlas upperPipeTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 130, 60, TextureOptions.BILINEAR);
-		_upperPipeTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(upperPipeTextureAtlas, activity, Constants.PIPEUPPER, 0, 0);
+		_upperPipeTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(upperPipeTextureAtlas, activity, Constants.Textures.PIPEUPPER, 0, 0);
 		upperPipeTextureAtlas.load();
 
 		// upper pipe section	
 		BitmapTextureAtlas upperPipeSectionTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 120, 1, TextureOptions.BILINEAR);
-		_upperPipeSectionTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(upperPipeSectionTextureAtlas, activity, Constants.PIPEUPPERSECTION, 0, 0);
+		_upperPipeSectionTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(upperPipeSectionTextureAtlas, activity, Constants.Textures.PIPEUPPERSECTION, 0, 0);
 		upperPipeSectionTextureAtlas.load();
 
 
 		// lower pipe		
 		BitmapTextureAtlas lowerPipeTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 130, 60, TextureOptions.BILINEAR);
-		_lowerPipeTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(lowerPipeTextureAtlas, activity, Constants.PIPELOWER, 0, 0);
+		_lowerPipeTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(lowerPipeTextureAtlas, activity, Constants.Textures.PIPELOWER, 0, 0);
 		lowerPipeTextureAtlas.load();
 
 		// lower pipe section	
 		BitmapTextureAtlas lowerPipeSectionTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 120, 1, TextureOptions.BILINEAR);
-		_lowerPipeSectionTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(lowerPipeSectionTextureAtlas, activity, Constants.PIPELOWERSECTION, 0, 0);
+		_lowerPipeSectionTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(lowerPipeSectionTextureAtlas, activity, Constants.Textures.PIPELOWERSECTION, 0, 0);
 		lowerPipeSectionTextureAtlas.load();
 	}
 
@@ -131,7 +131,7 @@ public class PipePair {
 	public boolean isCleared(float birdXOffset){
 		
 		if(!counted){
-			if(_upperPipe.getX()<(birdXOffset - (Constants.BIRD_WIDTH / 2))){
+			if(_upperPipe.getX()<(birdXOffset - (Constants.Bird.BIRD_WIDTH / 2))){
 				counted = true; // make sure we don't count this again
 				return true;
 			}

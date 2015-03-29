@@ -62,23 +62,23 @@ public class ResourceManager {
         mBackgroundBitmapTextureAtlas2 = new BitmapTextureAtlas(context.getTextureManager(), 718, 1184,
                 TextureOptions.NEAREST_PREMULTIPLYALPHA);
 		mBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(mBackgroundBitmapTextureAtlas, context.getAssets(), Constants.BACKGROUND_EARTH, 0, 0);
+				.createFromAsset(mBackgroundBitmapTextureAtlas, context.getAssets(), Constants.Textures.BACKGROUND_EARTH, 0, 0);
 
         mBackgroundTextureSpace = BitmapTextureAtlasTextureRegionFactory
-                .createFromAsset(mBackgroundBitmapTextureAtlas2, context.getAssets(), Constants.BACKGROUND_SPACE, 0, 0);
+                .createFromAsset(mBackgroundBitmapTextureAtlas2, context.getAssets(), Constants.Textures.BACKGROUND_SPACE, 0, 0);
 
 		mBackgroundBitmapTextureAtlas.load();
         mBackgroundBitmapTextureAtlas2.load();
 
         // instructions img
 		BitmapTextureAtlas instructionsTextureAtlas = new BitmapTextureAtlas(context.getTextureManager(), 285, 245, TextureOptions.BILINEAR);
-		mInstructionsTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(instructionsTextureAtlas, context, Constants.INSTRUCTION, 0, 0);
+		mInstructionsTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(instructionsTextureAtlas, context, Constants.Textures.INSTRUCTION, 0, 0);
 		instructionsTextureAtlas.load();
 
 		PipePair.onCreateResources(context); // let it sort its own resources out
 		Bird.onCreateResources(context);
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(), Constants.FONTNAME);
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(), Constants.Textures.FONTNAME);
 
 		// score board		
 		final ITexture scoreFontTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
@@ -110,8 +110,8 @@ public class ResourceManager {
 
 		// sounds
 		try {			
-			mScoreSound = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.SCOREMUSIC);
-			mDieSound = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.GAMEOVERMUSHC);
+			mScoreSound = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.Songs.SCOREMUSIC);
+			mDieSound = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.Songs.GAMEOVERMUSHC);
 		} catch (final IOException e) {
 			Debug.e(e);
 		}	
@@ -119,7 +119,7 @@ public class ResourceManager {
 		// music
 
 		try {
-			mMusic = MusicFactory.createMusicFromAsset(context.getMusicManager(), context, Constants.MUSIC);
+			mMusic = MusicFactory.createMusicFromAsset(context.getMusicManager(), context, Constants.Songs.MUSIC);
 			mMusic.setVolume(0.1f);
 			mMusic.setLooping(true);
 		} catch (final IOException e) {

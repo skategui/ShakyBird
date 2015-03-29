@@ -37,13 +37,13 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
         _sensor = (SensorManager) getSystemService(SENSOR_SERVICE);
         _sensor.registerListener(this, SensorManager.SENSOR_ACCELEROMETER, SensorManager.SENSOR_DELAY_GAME);
 
-		Constants.CAMERA_WIDTH = ScreenSizeHelper.calculateScreenWidth(this, Constants.CAMERA_HEIGHT);
+		Constants.CAMERA_WIDTH = ScreenSizeHelper.calculateScreenWidth(this, Constants.Game.CAMERA_HEIGHT);
 
         _gameManager = new GameManager(this);
         _gameManager.initializeCamera();
 
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED,
-                new RatioResolutionPolicy(Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT), _gameManager.getCamera());
+                new RatioResolutionPolicy(Constants.CAMERA_WIDTH, Constants.Game.CAMERA_HEIGHT), _gameManager.getCamera());
 
         engineOptions.getAudioOptions().setNeedsSound(true);
         engineOptions.getAudioOptions().setNeedsMusic(true);

@@ -46,7 +46,7 @@ public class GameManager {
 
     public void initializeCamera() {
 
-        _camera = new Camera(0, 0, Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT) {
+        _camera = new Camera(0, 0, Constants.CAMERA_WIDTH, Constants.Game.CAMERA_HEIGHT) {
 
 
             @Override
@@ -108,7 +108,7 @@ public class GameManager {
 
     private void ready() {
 
-        mCurrentWorldPosition -= Constants.SCROLL_SPEED;
+        mCurrentWorldPosition -= Constants.Game.SCROLL_SPEED;
         _activity.getSceneManager().getBird().hover();
 
         if (!_activity.getResourceManager().getmMusic().isPlaying()) {
@@ -119,7 +119,7 @@ public class GameManager {
 
     private void die() {
         float newY = _activity.getSceneManager().getBird().move(false); // get the bird to update itself
-        if (newY >= Constants.FLOOR_BOUND)
+        if (newY >= Constants.Game.FLOOR_BOUND)
             dead();
     }
 
@@ -149,19 +149,19 @@ public class GameManager {
 
     private void play() {
 
-        mCurrentWorldPosition -= Constants.SCROLL_SPEED;
+        mCurrentWorldPosition -= Constants.Game.SCROLL_SPEED;
 
 
         float newY = isSpaceScene() == true ? getPositionInSpace() : getPositionHeart();
 
 
-        if (newY >= Constants.FLOOR_BOUND)
+        if (newY >= Constants.Game.FLOOR_BOUND)
             gameOver(); // check if it game over from twatting the floor
 
         // now create _pipesList
         mPipeSpawnCounter++;
 
-        if (mPipeSpawnCounter > Constants.PIPE_SPAWN_INTERVAL) {
+        if (mPipeSpawnCounter > Constants.Game.PIPE_SPAWN_INTERVAL) {
             mPipeSpawnCounter = 0;
             spawnNewPipe();
         }
@@ -170,7 +170,7 @@ public class GameManager {
         for (int i = 0; i < _pipesList.size(); i++) {
             PipePair pipe = _pipesList.get(i);
             if (pipe.isOnScreen()) {
-                pipe.move(Constants.SCROLL_SPEED);
+                pipe.move(Constants.Game.SCROLL_SPEED);
                 if (pipe.collidesWith(_activity.getSceneManager().getBird().getSprite())) {
                     gameOver();
                 }

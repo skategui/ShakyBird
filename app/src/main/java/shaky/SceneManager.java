@@ -67,8 +67,8 @@ public class SceneManager {
         mScene.setBackgroundEnabled(true);
 
         // bird
-        float birdStartXOffset = (Constants.CAMERA_WIDTH / 4) - (Constants.BIRD_WIDTH / 4);
-        float birdYOffset = (Constants.CAMERA_HEIGHT / 2) - (Constants.BIRD_HEIGHT / 4);
+        float birdStartXOffset = (Constants.CAMERA_WIDTH / 4) - (Constants.Bird.BIRD_WIDTH / 4);
+        float birdYOffset = (Constants.Game.CAMERA_HEIGHT / 2) - (Constants.Bird.BIRD_HEIGHT / 4);
         _player = new Bird(birdStartXOffset, birdYOffset, mContext.getVertexBufferObjectManager(), mScene);
 
         //score
@@ -95,13 +95,13 @@ public class SceneManager {
         _instructionSprite.setY(_instructionSprite.getY() + 20);
 
         // you failed
-        _failText = new Text(0, Constants.CAMERA_HEIGHT / 2 - 100, mResourceManager.getFailedFont()
+        _failText = new Text(0, Constants.Game.CAMERA_HEIGHT / 2 - 100, mResourceManager.getFailedFont()
                 , Constants.FAILED, new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
         _failText.setZIndex(3);
         centerText(_failText);
 
           // create special font size
-        _gravityText = new Text(0, Constants.CAMERA_HEIGHT / 2 - 100, mResourceManager.getGravityFont()
+        _gravityText = new Text(0, Constants.Game.CAMERA_HEIGHT / 2 - 100, mResourceManager.getGravityFont()
                 , Constants.INVGRAVITY, new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
         _gravityText.setZIndex(3);
         centerText(_gravityText);
@@ -109,7 +109,7 @@ public class SceneManager {
 	
 	public static void centerSprite(Sprite sprite){
 		sprite.setX((Constants.CAMERA_WIDTH / 2) - (sprite.getWidth() / 2));
-		sprite.setY((Constants.CAMERA_HEIGHT / 2) - (sprite.getHeight() / 2));
+		sprite.setY((Constants.Game.CAMERA_HEIGHT / 2) - (sprite.getHeight() / 2));
 	}
 	
 	public void displayCurrentScore(int score){		
