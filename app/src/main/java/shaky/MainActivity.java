@@ -37,13 +37,13 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
         _sensor = (SensorManager) getSystemService(SENSOR_SERVICE);
         _sensor.registerListener(this, SensorManager.SENSOR_ACCELEROMETER, SensorManager.SENSOR_DELAY_GAME);
 
-		Constants.CAMERA_WIDTH = ScreenSizeHelper.calculateScreenWidth(this, Constants.Game.CAMERA_HEIGHT);
+		Config.CAMERA_WIDTH = ScreenSizeHelper.calculateScreenWidth(this, Config.Game.CAMERA_HEIGHT);
 
         _gameManager = new GameManager(this);
         _gameManager.initializeCamera();
 
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED,
-                new RatioResolutionPolicy(Constants.CAMERA_WIDTH, Constants.Game.CAMERA_HEIGHT), _gameManager.getCamera());
+                new RatioResolutionPolicy(Config.CAMERA_WIDTH, Config.Game.CAMERA_HEIGHT), _gameManager.getCamera());
 
         engineOptions.getAudioOptions().setNeedsSound(true);
         engineOptions.getAudioOptions().setNeedsMusic(true);
@@ -72,7 +72,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
                 float rem =  last_x  + last_y + last_z;
                 float res = add - rem;
                 float speed = Math.abs(res) / diffTime * 10000;
-                if (speed > Constants.SHAKE_POWER) {
+                if (speed > Config.SHAKE_POWER) {
                     Log.e("sensor", "shake detected w/ speed: " + speed);
                     _gameManager.makeItJump();
 

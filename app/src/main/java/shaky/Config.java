@@ -3,7 +3,7 @@ package shaky;
 /**
  * Created by guillaumeagis on 29/03/15.
  */
-public class Constants {
+public class Config {
 
 
     /**
@@ -99,7 +99,7 @@ public class Constants {
         /**
          * font filename
          */
-        public static  final String FONTNAME = "flappy.ttf";
+        public static  final String FONTNAME = "angrybirds.ttf";
 
         /**
          * background on earth

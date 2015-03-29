@@ -45,73 +45,71 @@ public class ResourceManager {
 
 
 
-    private SimpleBaseGameActivity context;
+    private SimpleBaseGameActivity _context;
 	
-	public ResourceManager(SimpleBaseGameActivity context){
-		this.context = context;
+	public ResourceManager(SimpleBaseGameActivity _context){
+		this._context = _context;
 	}
 	
 	public void createResources(){
-		SoundFactory.setAssetBasePath(Constants.SOUND_PATH);
-		MusicFactory.setAssetBasePath(Constants.SOUND_PATH);
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(Constants.IMG_PATH);
+		SoundFactory.setAssetBasePath(Config.SOUND_PATH);
+		MusicFactory.setAssetBasePath(Config.SOUND_PATH);
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(Config.IMG_PATH);
 
 		// background
-		mBackgroundBitmapTextureAtlas = new BitmapTextureAtlas(context.getTextureManager(), 718, 1184, 
+		mBackgroundBitmapTextureAtlas = new BitmapTextureAtlas(_context.getTextureManager(), 718, 1184,
 				TextureOptions.NEAREST_PREMULTIPLYALPHA);
-        mBackgroundBitmapTextureAtlas2 = new BitmapTextureAtlas(context.getTextureManager(), 718, 1184,
+        mBackgroundBitmapTextureAtlas2 = new BitmapTextureAtlas(_context.getTextureManager(), 718, 1184,
                 TextureOptions.NEAREST_PREMULTIPLYALPHA);
 		mBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(mBackgroundBitmapTextureAtlas, context.getAssets(), Constants.Textures.BACKGROUND_EARTH, 0, 0);
+				.createFromAsset(mBackgroundBitmapTextureAtlas, _context.getAssets(), Config.Textures.BACKGROUND_EARTH, 0, 0);
 
         mBackgroundTextureSpace = BitmapTextureAtlasTextureRegionFactory
-                .createFromAsset(mBackgroundBitmapTextureAtlas2, context.getAssets(), Constants.Textures.BACKGROUND_SPACE, 0, 0);
+                .createFromAsset(mBackgroundBitmapTextureAtlas2, _context.getAssets(), Config.Textures.BACKGROUND_SPACE, 0, 0);
 
 		mBackgroundBitmapTextureAtlas.load();
         mBackgroundBitmapTextureAtlas2.load();
 
         // instructions img
-		BitmapTextureAtlas instructionsTextureAtlas = new BitmapTextureAtlas(context.getTextureManager(), 285, 245, TextureOptions.BILINEAR);
-		mInstructionsTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(instructionsTextureAtlas, context, Constants.Textures.INSTRUCTION, 0, 0);
+		BitmapTextureAtlas instructionsTextureAtlas = new BitmapTextureAtlas(_context.getTextureManager(), 285, 245, TextureOptions.BILINEAR);
+		mInstructionsTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(instructionsTextureAtlas, _context, Config.Textures.INSTRUCTION, 0, 0);
 		instructionsTextureAtlas.load();
 
-		PipePair.onCreateResources(context); // let it sort its own resources out
-		Bird.onCreateResources(context);
+		PipePair.onCreateResources(_context); // let it sort its own resources out
+		Bird.onCreateResources(_context);
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(), Constants.Textures.FONTNAME);
+		Typeface typeFace = Typeface.createFromAsset(_context.getAssets(), Config.Textures.FONTNAME);
 
 		// score board		
-		final ITexture scoreFontTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-		_scoreFont = new StrokeFont(context.getFontManager(), scoreFontTexture, typeFace, 45, true, Color.WHITE, 2, Color.BLACK);
+		final ITexture scoreFontTexture = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
+		_scoreFont = new StrokeFont(_context.getFontManager(), scoreFontTexture, typeFace, 45, true, Color.WHITE, 2, Color.BLACK);
 		_scoreFont.load();
 
 		// title texture
-		final ITexture titleTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-		_titleFont = new StrokeFont(context.getFontManager(), titleTexture, typeFace, 60, true,
-                context.getResources().getColor(R.color.custom_blue_trans), 2, Color.BLACK);
+		final ITexture titleTexture = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
+		_titleFont = new StrokeFont(_context.getFontManager(), titleTexture, typeFace, 80, true,
+                _context.getResources().getColor(R.color.custom_blue_trans), 2, Color.BLACK);
 		_titleFont.load();
 
 
-		// (c) text
-		final ITexture copyFontTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-		mCopyFont = new StrokeFont(context.getFontManager(), copyFontTexture, typeFace, 20, true, Color.WHITE, 2, Color.BLACK);
+		final ITexture copyFontTexture = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
+		mCopyFont = new StrokeFont(_context.getFontManager(), copyFontTexture, typeFace, 40, true, Color.WHITE, 2, Color.BLACK);
 		mCopyFont.load();
 
 		// Fail message
-		final ITexture FailedTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-		_failFont = new StrokeFont(context.getFontManager(), FailedTexture, typeFace, 80, true, Color.WHITE, 2, Color.BLACK);
+		final ITexture FailedTexture = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
+		_failFont = new StrokeFont(_context.getFontManager(), FailedTexture, typeFace, 100, true, _context.getResources().getColor(R.color.custom_red_trans), 2, Color.BLACK);
 		_failFont.load();
 
-
         // inv Gravity message
-        final ITexture GravityTexture = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-        _gravityFont = new StrokeFont(context.getFontManager(), GravityTexture, typeFace, 40, true, Color.WHITE, 2, Color.BLACK);
+        final ITexture GravityTexture = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
+        _gravityFont = new StrokeFont(_context.getFontManager(), GravityTexture, typeFace, 50, true, Color.WHITE, 2, Color.BLACK);
         _gravityFont.load();
 
 		// sounds
 		try {			
-			_score = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.Songs.SCOREMUSIC);
-			_die = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.Songs.GAMEOVERMUSHC);
+			_score = SoundFactory.createSoundFromAsset(_context.getSoundManager(), _context, Config.Songs.SCOREMUSIC);
+			_die = SoundFactory.createSoundFromAsset(_context.getSoundManager(), _context, Config.Songs.GAMEOVERMUSHC);
 		} catch (final IOException e) {
 			Debug.e(e);
 		}	
@@ -119,7 +117,7 @@ public class ResourceManager {
 		// music
 
 		try {
-			_music = MusicFactory.createMusicFromAsset(context.getMusicManager(), context, Constants.Songs.MUSIC);
+			_music = MusicFactory.createMusicFromAsset(_context.getMusicManager(), _context, Config.Songs.MUSIC);
 			_music.setVolume(0.1f);
 			_music.setLooping(true);
 		} catch (final IOException e) {

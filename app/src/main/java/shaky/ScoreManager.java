@@ -7,7 +7,7 @@ import android.content.SharedPreferences.Editor;
 public class ScoreManager {
 
 	public static int GetBestScore(Context context){
-		SharedPreferences prefs = context.getSharedPreferences( context.getPackageName() + Constants.SCORE_FILE, Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences( context.getPackageName() + Config.SCORE_FILE, Context.MODE_PRIVATE);
 
 		return prefs.getInt("bestscore", 0);
 	}
@@ -17,7 +17,7 @@ public class ScoreManager {
 		if(newScore > GetBestScore(context)){
 
 			SharedPreferences prefs = context.getSharedPreferences(
-					context.getPackageName() + Constants.SCORE_FILE, Context.MODE_PRIVATE);
+					context.getPackageName() + Config.SCORE_FILE, Context.MODE_PRIVATE);
 
 			Editor editor = prefs.edit();
 			editor.putInt("bestscore", newScore);

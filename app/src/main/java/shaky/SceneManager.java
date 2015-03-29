@@ -14,7 +14,7 @@ import org.andengine.util.HorizontalAlign;
 
 public class SceneManager {
 
-	private SimpleBaseGameActivity _content;
+	private SimpleBaseGameActivity _context;
 	private ResourceManager _ressourceManager;
 	private ParallaxBackground _parallax;
 
@@ -33,7 +33,7 @@ public class SceneManager {
 
 
 	public SceneManager(SimpleBaseGameActivity context, ResourceManager resourceManager, ParallaxBackground parallaxBackground){
-		this._content = context;
+		this._context = context;
 		this._ressourceManager = resourceManager;
 		this._parallax = parallaxBackground;
 	}
@@ -42,7 +42,7 @@ public class SceneManager {
 	public Scene createScene(){
 
         Scene mScene = new Scene();
-        VertexBufferObjectManager vbo = _content.getVertexBufferObjectManager();
+        VertexBufferObjectManager vbo = _context.getVertexBufferObjectManager();
 
         _earthBackground = new Sprite(0, 0 , _ressourceManager.getmBackgroundTextureRegion(), vbo);
         _spaceBackground = new Sprite(0, 0 , _ressourceManager.getmBackgroundTextureSpace(), vbo);
@@ -75,63 +75,64 @@ public class SceneManager {
         mScene.setBackgroundEnabled(true);
 
         // bird
-        float birdStartXOffset = (Constants.CAMERA_WIDTH / 4) - (Constants.Bird.BIRD_WIDTH / 4);
-        float birdYOffset = (Constants.Game.CAMERA_HEIGHT / 2) - (Constants.Bird.BIRD_HEIGHT / 4);
-        _player = new Bird(birdStartXOffset, birdYOffset, _content.getVertexBufferObjectManager(), mScene);
+        float birdStartXOffset = (Config.CAMERA_WIDTH / 4) - (Config.Bird.BIRD_WIDTH / 4);
+        float birdYOffset = (Config.Game.CAMERA_HEIGHT / 2) - (Config.Bird.BIRD_HEIGHT / 4);
+        _player = new Bird(birdStartXOffset, birdYOffset, _context.getVertexBufferObjectManager(), mScene);
 
         //score
-        _scoreText = new Text(0,720, _ressourceManager.getScoreFont(), "        ", new TextOptions(HorizontalAlign.CENTER), _content.getVertexBufferObjectManager());
+        _scoreText = new Text(0,720, _ressourceManager.getScoreFont(), "        ", new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
         _scoreText.setZIndex(3);
         mScene.attachChild(_scoreText);
 
         // App Name
-        _appNameText = new Text(0, 100, _ressourceManager.getTitleFont(), this._content.getResources().getString(R.string.app_name), new TextOptions(HorizontalAlign.CENTER), _content.getVertexBufferObjectManager());
+        _appNameText = new Text(0, 100, _ressourceManager.getTitleFont(), this._context.getResources().getString(R.string.app_name), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
         _appNameText.setZIndex(3);
         mScene.attachChild(_appNameText);
         centerText(_appNameText);
 
-        _makeItText = new Text(0, 170, _ressourceManager.getGravityFont(), this._content.getResources().getString(R.string.makeitshake), new TextOptions(HorizontalAlign.CENTER), _content.getVertexBufferObjectManager());
+        // make it skake msg !
+        _makeItText = new Text(0, 180, _ressourceManager.getGravityFont(), this._context.getResources().getString(R.string.makeitshake), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
         _makeItText.setZIndex(3);
         mScene.attachChild(_makeItText);
         centerText(_makeItText);
 
         // instructions image
-        _instructionSprite = new Sprite(0, 0, 200, 172, _ressourceManager.getmInstructionsTexture(), _content.getVertexBufferObjectManager());
+        _instructionSprite = new Sprite(0, 0, 200, 172, _ressourceManager.getmInstructionsTexture(), _context.getVertexBufferObjectManager());
         _instructionSprite.setZIndex(3);
         mScene.attachChild(_instructionSprite);
         centerSprite(_instructionSprite);
         _instructionSprite.setY(_instructionSprite.getY() + 20);
 
-        // you failed
-        _failText = new Text(0, Constants.Game.CAMERA_HEIGHT / 2 - 100, _ressourceManager.getFailedFont()
-                , this._content.getResources().getString(R.string.failed), new TextOptions(HorizontalAlign.CENTER), _content.getVertexBufferObjectManager());
+        //  failed
+        _failText = new Text(0, Config.Game.CAMERA_HEIGHT / 2 - 100, _ressourceManager.getFailedFont()
+                , this._context.getResources().getString(R.string.failed), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
         _failText.setZIndex(3);
         centerText(_failText);
 
           // create special font size
-        _gravityText = new Text(0, Constants.Game.CAMERA_HEIGHT / 2 - 100, _ressourceManager.getGravityFont()
-                , this._content.getResources().getString(R.string.grav_invertion), new TextOptions(HorizontalAlign.CENTER), _content.getVertexBufferObjectManager());
+        _gravityText = new Text(0, Config.Game.CAMERA_HEIGHT / 2 - 100, _ressourceManager.getGravityFont()
+                , this._context.getResources().getString(R.string.grav_invertion), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
         _gravityText.setZIndex(3);
         centerText(_gravityText);
     }
 	
 	public static void centerSprite(Sprite sprite){
-		sprite.setX((Constants.CAMERA_WIDTH / 2) - (sprite.getWidth() / 2));
-		sprite.setY((Constants.Game.CAMERA_HEIGHT / 2) - (sprite.getHeight() / 2));
+		sprite.setX((Config.CAMERA_WIDTH / 2) - (sprite.getWidth() / 2));
+		sprite.setY((Config.Game.CAMERA_HEIGHT / 2) - (sprite.getHeight() / 2));
 	}
 	
 	public void displayCurrentScore(int score){		
-			_scoreText.setText(String.valueOf(score));
+			_scoreText.setText(_context.getResources().getString(R.string.score) + " " + score);
 			centerText(_scoreText);
 	}
 	
 	public void displayBestScore(int score){
-		_scoreText.setText(this._content.getResources().getString(R.string.bestscore) + score);
+		_scoreText.setText(this._context.getResources().getString(R.string.bestscore) + " " + score);
 		centerText(_scoreText);
 	}
 
 	private void centerText(Text text){
-		text.setX((Constants.CAMERA_WIDTH / 2) - (text.getWidth() / 2));
+		text.setX((Config.CAMERA_WIDTH / 2) - (text.getWidth() / 2));
 	}
 
     public Bird getBird()
