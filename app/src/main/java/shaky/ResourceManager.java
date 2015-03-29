@@ -32,9 +32,9 @@ public class ResourceManager {
     private StrokeFont _gravityFont;
 
 	// sounds
-    private Sound mScoreSound;
-    private Sound mDieSound;
-    private Music mMusic;
+    private Sound _score;
+    private Sound _die;
+    private Music _music;
 
 	//textures
     private BitmapTextureAtlas mBackgroundBitmapTextureAtlas;
@@ -110,8 +110,8 @@ public class ResourceManager {
 
 		// sounds
 		try {			
-			mScoreSound = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.Songs.SCOREMUSIC);
-			mDieSound = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.Songs.GAMEOVERMUSHC);
+			_score = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.Songs.SCOREMUSIC);
+			_die = SoundFactory.createSoundFromAsset(context.getSoundManager(), context, Constants.Songs.GAMEOVERMUSHC);
 		} catch (final IOException e) {
 			Debug.e(e);
 		}	
@@ -119,24 +119,24 @@ public class ResourceManager {
 		// music
 
 		try {
-			mMusic = MusicFactory.createMusicFromAsset(context.getMusicManager(), context, Constants.Songs.MUSIC);
-			mMusic.setVolume(0.1f);
-			mMusic.setLooping(true);
+			_music = MusicFactory.createMusicFromAsset(context.getMusicManager(), context, Constants.Songs.MUSIC);
+			_music.setVolume(0.1f);
+			_music.setLooping(true);
 		} catch (final IOException e) {
 			Debug.e("Error", e);
 		}
 	}
 
-    public Sound getmScoreSound() {
-        return mScoreSound;
+    public Sound get_score() {
+        return _score;
     }
 
-    public Sound getmDieSound() {
-        return mDieSound;
+    public Sound get_die() {
+        return _die;
     }
 
-    public Music getmMusic() {
-        return mMusic;
+    public Music getMusic() {
+        return _music;
     }
 
 

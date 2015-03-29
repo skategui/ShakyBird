@@ -33,13 +33,6 @@ public class Constants {
      */
     public static final String IMG_PATH = "img/";
 
-    public static final String SHAKYBIRD = "Shaky Bird";
-    public static final String MAKEITSHAKE = "Make it shake !";
-    public static final String FAILED = "Failed !";
-    public static final String INVGRAVITY = "Gravity's invertion!";
-    public static final String BESTSCORE = "Best - ";
-
-
     public class Game
     {
         public static final float CAMERA_HEIGHT = 800;

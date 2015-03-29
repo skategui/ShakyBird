@@ -139,7 +139,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 	@Override
 	public final void onPause() {
 		super.onPause();
-		_resourceManager.getmMusic().pause();
+		_resourceManager.getMusic().pause();
 	}
 
     public SceneManager getSceneManager() {

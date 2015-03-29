@@ -111,8 +111,8 @@ public class GameManager {
         mCurrentWorldPosition -= Constants.Game.SCROLL_SPEED;
         _activity.getSceneManager().getBird().hover();
 
-        if (!_activity.getResourceManager().getmMusic().isPlaying()) {
-            _activity.getResourceManager().getmMusic().play();
+        if (!_activity.getResourceManager().getMusic().isPlaying()) {
+            _activity.getResourceManager().getMusic().play();
         }
     }
 
@@ -187,7 +187,7 @@ public class GameManager {
 
     public void score(){
         _score++;
-        _activity.getResourceManager().getmScoreSound().play();
+        _activity.getResourceManager().get_score().play();
         updateScore();
     }
 
@@ -205,7 +205,7 @@ public class GameManager {
      */
     public void restartGame(){
         _currentState = eStateGame.READY;
-        _activity.getResourceManager().getmMusic().resume();
+        _activity.getResourceManager().getMusic().resume();
         _activity.getSceneManager().getBird().restart();
         _score = 0;
         updateScore();
@@ -235,8 +235,8 @@ public class GameManager {
 
         this._currentState = eStateGame.PLAYING;
 
-        this._activity.getResourceManager().getmMusic().pause();
-        this._activity.getResourceManager().getmMusic().seekTo(0);
+        this._activity.getResourceManager().getMusic().pause();
+        this._activity.getResourceManager().getMusic().seekTo(0);
         this._activity.getScene().detachChild(_activity.getSceneManager().getAppText());
         this._activity.getScene().detachChild(_activity.getSceneManager().getInstructionSprite());
         this._activity.getScene().detachChild(_activity.getSceneManager().getMakeItText());
@@ -253,7 +253,7 @@ public class GameManager {
 
         _currentState = eStateGame.DYING;
 
-        _activity.getResourceManager().getmDieSound().play();
+        _activity.getResourceManager().get_die().play();
         this._activity.getScene().attachChild(_activity.getSceneManager().getFailText());
         _activity.getSceneManager().getBird().getSprite().stopAnimation();
         ScoreManager.SetBestScore(_activity, _score);
