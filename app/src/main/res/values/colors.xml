@@ -8,11 +8,7 @@
     <color name="custom_dark_green">#1cbbb4</color>
     <color name="custom_blue">#15bce9</color>
     <color name="custom_dark_blue">#3270e2</color>
-    <color name="custom_violet">#785ee9</color>
-    <color name="custom_pale_brown">#fbaf5d</color>
-    <color name="custom_light_brown">#cf9d65</color>
-    <color name="custom_dark_brown">#ae6a23</color>
-    <color name="custom_grey">#a4a4a4</color>
+
 
     <!-- color with 85% of transparence -->
     <color name="custom_red_trans">#d9ff5967</color>
@@ -21,10 +17,5 @@
     <color name="custom_green_trans">#d92ecc7b</color>
     <color name="custom_dark_green_trans">#d91cbbb4</color>
     <color name="custom_blue_trans">#d915bce9</color>
-    <color name="custom_dark_blue_trans">#d93270e2</color>
-    <color name="custom_violet_trans">#d9785ee9</color>
-    <color name="custom_pale_brown_trans">#d9fbaf5d</color>
-    <color name="custom_light_brown_trans">#d9cf9d65</color>
-    <color name="custom_dark_brown_trans">#d9ae6a23</color>
-    <color name="custom_grey_trans">#d9a4a4a4</color>
+
 </resources>

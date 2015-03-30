@@ -2,35 +2,20 @@ package shaky;
 
 /**
  * Created by guillaumeagis on 29/03/15.
+ * Variables related to the configuration of the game.
+ * ie . Camera, pipes, positions, gravity, bird...
  */
 public class Config {
 
-
-    /**
-     * Game constants, related to camera, pipes, positions...
-     */
-
-    public static float CAMERA_WIDTH = 485; // this is not final because we dynamically set it at runtime based on the device aspect ratio
-
-
-    /**
-     * shake  power
-     */
+    // this is not final because we dynamically set it at runtime based on the device aspect ratio
+    public static float CAMERA_WIDTH = 485;
+    // shake  power
     public static final int SHAKE_POWER = 500;
-
-    /**
-     * score file
-     */
-    public static final String SCORE_FILE = ".score";
-
-    /**
-     * sound directory
-     */
+     // updateScore file
+    public static final String SCORE_FILE = ".updateScore";
+    // sound directory
     public static final String SOUND_PATH = "sound/";
-
-    /**
-     * image directory
-     */
+     // image directory
     public static final String IMG_PATH = "img/";
 
     public class Game
@@ -55,69 +40,45 @@ public class Config {
         public static final float BIRD_HEIGHT = 40f;
 
         public static final float MAX_DROP_SPEED = 12.0f;
-        public static final float GRAVITY = 0.04f; // 0.04f
+        public static final float GRAVITY = 0.04f;
         public static final float FLAP_POWER = 6f;
 
         public static final float BIRD_MAX_FLAP_ANGLE = -20;
         public static final float BIRD_MAX_DROP_ANGLE = 90;
         public static final float FLAP_ANGLE_DRAG = 4.0f;
         public static final float BIRD_FLAP_ANGLE_POWER = 15.0f;
-
+        // bird sprite filename
         public static final String BIRDFILENAME = "birdmap.png";
     }
 
     public class Songs
     {
-
-
-        /**
-         * Score music
-         */
-        public static final String SCOREMUSIC = "score.ogg";
-
-        /**
-         * game over music
-         */
+         // Score music
+        public static final String SCOREMUSIC = "updateScore.ogg";
+         // game over music
         public static final String GAMEOVERMUSHC = "gameover.ogg";
-
-        /**
-         * game music
-         */
+         // game music
         public static final String MUSIC = "song.ogg";
-
         public static final String JUMPMUSIC = "jump.ogg";
-
     }
 
     public class Textures
     {
-        /**
-         * intro image
-         */
+         // intro image
         public static  final String INSTRUCTION = "instructions.png";
-
-        /**
-         * font filename
-         */
+        // font filename
         public static  final String FONTNAME = "angrybirds.ttf";
-
-        /**
-         * background on earth
-         */
+        // background on earth
         public static final String BACKGROUND_EARTH = "background480.png";
-
-        /**
-         * Backgroud in space
-         */
+        // Backgroud in space
         public static final String BACKGROUND_SPACE = "background_space2.png";
-
+        // pipe upper head part
         public static final String PIPEUPPER = "pipeupper.png";
+        // pipe upper body
         public static final String PIPEUPPERSECTION = "pipesectionupper.png";
-
+        // pipe lower head
         public static final String PIPELOWER = "pipelower.png";
+        // pipe lower body
         public static final String PIPELOWERSECTION = "pipesectionlower.png";
     }
-
-
-
 }

@@ -79,7 +79,7 @@ public class SceneManager {
         float birdYOffset = (Config.Game.CAMERA_HEIGHT / 2) - (Config.Bird.BIRD_HEIGHT / 4);
         _player = new Bird(birdStartXOffset, birdYOffset, _context.getVertexBufferObjectManager(), mScene);
 
-        //score
+        //updateScore
         _scoreText = new Text(0,720, _ressourceManager.getScoreFont(), "        ", new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
         _scoreText.setZIndex(3);
         mScene.attachChild(_scoreText);

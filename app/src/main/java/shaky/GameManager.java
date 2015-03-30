@@ -12,8 +12,12 @@ import java.util.ArrayList;
  */
 public class GameManager {
 
+    // main activity
     private MainActivity _activity;
 
+    /**
+     * user game state
+     */
     private enum eStateGame {
         READY,
         PLAYING,
@@ -23,41 +27,42 @@ public class GameManager {
 
     private TimerHandler _timer;
 
-    protected float mCurrentWorldPosition;
+    protected float _position;
 
+    // user current state
     private eStateGame _currentState = eStateGame.READY;
-    private boolean withGravity = false;
+    // boolean too check if we have to change the background or not
     private boolean lastwithGravity = false;
     private Camera _camera;
-    // game variables
+
+    // user updateScore
     private int _score = 0;
 
     private ArrayList<PipePair> _pipesList = new ArrayList<>();
+
+    private int _nbrPipesSpawn;
+    private float prevX = 0;
+    private float parallaxValueOffset = 0;
     private float mBirdXOffset;
-
-    private int mPipeSpawnCounter;
-    float prevX = 0;
-    float parallaxValueOffset = 0;
-
 
     public GameManager(MainActivity activity) {
         this._activity = activity;
     }
 
+    /**
+     * create camera Object
+     */
     public void initializeCamera() {
 
         _camera = new Camera(0, 0, Config.CAMERA_WIDTH, Config.Game.CAMERA_HEIGHT) {
-
 
             @Override
             public void onUpdate(float pSecondsElapsed) {
 
                 switch (_currentState) {
-
                     case READY:
                         ready();
                         break;
-
                     case PLAYING:
                         play();
                         break;
@@ -66,34 +71,37 @@ public class GameManager {
                         die();
                         break;
                 }
-
                 super.onUpdate(pSecondsElapsed);
             }
         };
     }
 
+    // getter
     public Camera getCamera() {
         return _camera;
     }
 
-
+    /**
+     *  Make the bird jump, once the user shakes the phone during the game
+     */
     public void makeItJump() {
         switch (_currentState) {
-
             case PLAYING:
-                _activity.getSceneManager().getBird().flap();
+                _activity.getSceneManager().getBird().jump();
                 break;
         }
     }
 
+    /**
+     * Check a every moment what the state of the game is and update the view.
+     *
+     */
     public void updateScene() {
 
-
         switch(_currentState){
-
             case READY:
             case PLAYING:
-                final float cameraCurrentX = mCurrentWorldPosition;//_camera.getCenterX();
+                final float cameraCurrentX = _position;//_camera.getCenterX();
 
                 if (prevX != cameraCurrentX) {
 
@@ -106,9 +114,12 @@ public class GameManager {
     }
 
 
+    /**
+     * User is read to play  : intro page
+     */
     private void ready() {
 
-        mCurrentWorldPosition -= Config.Game.SCROLL_SPEED;
+        _position -= Config.Game.SCROLL_SPEED;
         _activity.getSceneManager().getBird().hover();
 
         if (!_activity.getResourceManager().getMusic().isPlaying()) {
@@ -117,18 +128,29 @@ public class GameManager {
     }
 
 
+    /**
+     * The user just died
+     */
     private void die() {
         float newY = _activity.getSceneManager().getBird().move(false); // get the bird to update itself
         if (newY >= Config.Game.FLOOR_BOUND)
             dead();
     }
 
+    /**
+     * Check in function the updateScore if the user is on the space or on earth.
+     * @return true, if the user is on space, false otherwise
+     */
     private boolean isSpaceScene() {
-        if ((_score >= 5 && _score <= 8) || (_score >= 13 && _score <= 18))
+        if ((_score >= 5 && _score <= 8) || (_score >= 13 && _score <= 18)  || (_score >= 23 && _score <= 28))
             return true;
         return false;
     }
 
+    /**
+     * Display the background in the space and make the bird jump with an invertion of gravity
+     * @return true
+     */
     private float getPositionInSpace() {
         if (lastwithGravity == false) {
             _activity.getSceneManager().changeBackground(true);
@@ -138,6 +160,10 @@ public class GameManager {
         return _activity.getSceneManager().getBird().move(true); // get the bird to update itself
     }
 
+    /**
+     * Display the background in the earths and make the bird jump with a normal gravity
+     * @return false
+     */
     private float getPositionHeart() {
         if (lastwithGravity == true) {
             _activity.getSceneManager().changeBackground(false);
@@ -147,25 +173,34 @@ public class GameManager {
         return _activity.getSceneManager().getBird().move(false); // get the bird to update itself
     }
 
+    /**
+     * the user is currently playing, check where he should be and update the scene.
+     */
     private void play() {
 
-        mCurrentWorldPosition -= Config.Game.SCROLL_SPEED;
-
+        _position -= Config.Game.SCROLL_SPEED;
 
         float newY = isSpaceScene() == true ? getPositionInSpace() : getPositionHeart();
-
 
         if (newY >= Config.Game.FLOOR_BOUND)
             gameOver(); // check if it game over from twatting the floor
 
         // now create _pipesList
-        mPipeSpawnCounter++;
+        _nbrPipesSpawn++;
 
-        if (mPipeSpawnCounter > Config.Game.PIPE_SPAWN_INTERVAL) {
-            mPipeSpawnCounter = 0;
+        if (_nbrPipesSpawn > Config.Game.PIPE_SPAWN_INTERVAL) {
+            _nbrPipesSpawn = 0;
             spawnNewPipe();
         }
 
+        renderPipesOnScreen();
+    }
+
+    /**
+     * Render pipes on Screen and check if the bird has touched a pipes or not
+     */
+    private void renderPipesOnScreen()
+    {
         // now render the _pipesList
         for (int i = 0; i < _pipesList.size(); i++) {
             PipePair pipe = _pipesList.get(i);
@@ -176,7 +211,7 @@ public class GameManager {
                 }
 
                 if (pipe.isCleared(mBirdXOffset)) {
-                    score();
+                    updateScore();
                 }
             } else {
                 pipe.destroy();
@@ -185,13 +220,19 @@ public class GameManager {
         }
     }
 
-    public void score(){
+    /**
+     * update updateScore
+     */
+    public void updateScore(){
         _score++;
         _activity.getResourceManager().get_score().play();
-        updateScore();
+        displayScore();
     }
 
-    public void updateScore(){
+    /**
+     * display updateScore
+     */
+    public void displayScore(){
 
         if(_currentState == eStateGame.READY){
             _activity.getSceneManager().displayBestScore(ScoreManager.GetBestScore(_activity));
@@ -208,7 +249,7 @@ public class GameManager {
         _activity.getResourceManager().getMusic().resume();
         _activity.getSceneManager().getBird().restart();
         _score = 0;
-        updateScore();
+        displayScore();
         removeAllPipes();
 
         PipePair.resetGame();
@@ -218,6 +259,9 @@ public class GameManager {
         this._activity.getScene().attachChild(_activity.getSceneManager().getInstructionSprite());
     }
 
+    /**
+     * remove all pipes from the list and recycle them
+     */
     private void removeAllPipes()
     {
         for (int i = 0; i< _pipesList.size(); i++){
@@ -241,8 +285,8 @@ public class GameManager {
         this._activity.getScene().detachChild(_activity.getSceneManager().getInstructionSprite());
         this._activity.getScene().detachChild(_activity.getSceneManager().getMakeItText());
         this._activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
-        updateScore();
-        _activity.getSceneManager().getBird().flap();
+        displayScore();
+        _activity.getSceneManager().getBird().jump();
     }
 
 
@@ -298,6 +342,9 @@ public class GameManager {
 
     }
 
+    /**
+     * Set listener on the current scene
+     */
     public void setListenerOnTouch()
     {
         switch (_currentState) {
@@ -308,7 +355,7 @@ public class GameManager {
                 break;
 
             case PLAYING:
-                _activity.getSceneManager().getBird().flap();
+                _activity.getSceneManager().getBird().jump();
                 break;
         }
     }

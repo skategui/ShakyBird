@@ -98,7 +98,7 @@ public class Bird {
 	}
 
 
-	public void flap(){
+	public void jump(){
 		mVerticalSpeed = (-Config.Bird.FLAP_POWER);
 		_macceleration = 0;
 		mJumpSound.play();

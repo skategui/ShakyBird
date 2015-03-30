@@ -80,7 +80,7 @@ public class ResourceManager {
 
 		Typeface typeFace = Typeface.createFromAsset(_context.getAssets(), Config.Textures.FONTNAME);
 
-		// score board		
+		// updateScore board
 		final ITexture scoreFontTexture = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
 		_scoreFont = new StrokeFont(_context.getFontManager(), scoreFontTexture, typeFace, 45, true, Color.WHITE, 2, Color.BLACK);
 		_scoreFont.load();

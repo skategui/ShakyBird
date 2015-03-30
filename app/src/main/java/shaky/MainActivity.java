@@ -117,7 +117,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
         _scene = _sceneManager.createScene();
 
         defineListener(_scene);
-		_gameManager.updateScore();
+		_gameManager.displayScore();
 		return _scene;
 	}
 

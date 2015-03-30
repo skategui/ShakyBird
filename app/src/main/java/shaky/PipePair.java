@@ -95,10 +95,13 @@ public class PipePair {
 		_scene.attachChild(_lowerPipeSection);
 		_scene.sortChildren();
 
-
+        if (_nbrJump <= 12) //change the difficulty just 4 times, it should be difficult enough :)
         changeDifficulty();
     }
 
+    /**
+     * check if it should be harder or not, every 4 pipes jumped, it is getting harder and harder
+     */
     private void changeDifficulty()
     {
         _nbrJump++;
@@ -153,6 +156,11 @@ public class PipePair {
 
 	}
 
+    /**
+     * Check if the bird has collied one of the pipes
+     * @param bird bird
+     * @return true if collied, false otherwise
+     */
 	public boolean collidesWith(Sprite bird){
 
 		if(_upperPipe.collidesWith(bird))
