@@ -15,6 +15,7 @@ public class PipePair {
 
     private Scene _scene;
 
+    // sprite
     private Sprite _upperPipe;
     private Sprite _upperPipeSection;
     private Sprite _lowerPipe;
@@ -22,17 +23,18 @@ public class PipePair {
     private boolean counted = false;
 
 
+    // level
     private static int _nbrJump = 0;
     private static int _distance = 220;
     private static final float PIPE_Y_OFFSET = Config.CAMERA_WIDTH + 200; // make sure they always spawn way off screen
 
 
 
-    // upper pipe
+    // upper pipe texture
 	private static TextureRegion _upperPipeTexture;
 	private static TextureRegion _upperPipeSectionTexture;
 
-	//lower pipe
+	//lower pipe texture
 	private static TextureRegion _lowerPipeTexture;
 	private static TextureRegion _lowerPipeSectionTexture;
 

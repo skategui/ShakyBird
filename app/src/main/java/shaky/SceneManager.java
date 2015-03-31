@@ -21,7 +21,7 @@ public class SceneManager {
 	// text objects
     private Text _scoreText;
     private Text _appNameText;
-    private Text _makeItText;
+    private Text _subtitle;
     private Sprite _instructionSprite;
     private Text _failText;
     private Text _gravityText;
@@ -45,8 +45,8 @@ public class SceneManager {
         Scene mScene = new Scene();
         VertexBufferObjectManager vbo = _context.getVertexBufferObjectManager();
 
-        _earthBackground = new Sprite(0, 0 , _ressourceManager.get_earthBack(), vbo);
-        _spaceBackground = new Sprite(0, 0 , _ressourceManager.get_spaceBack(), vbo);
+        _earthBackground = new Sprite(0, 0 , _ressourceManager.getEarthBackground(), vbo);
+        _spaceBackground = new Sprite(0, 0 , _ressourceManager.getSpaceBackground(), vbo);
 
 
         _parallax.attachParallaxEntity(new ParallaxEntity(1, _earthBackground));
@@ -92,12 +92,13 @@ public class SceneManager {
         centerText(_appNameText);
 
         // make it skake msg !
-        _makeItText = new Text(0, 170, _ressourceManager.getMakeItshakeFont(), this._context.getResources().getString(R.string.makeitshake), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
-        _makeItText.setZIndex(3);
-        mScene.attachChild(_makeItText);
-        centerText(_makeItText);
+        _subtitle = new Text(0, 170, _ressourceManager.getSubTitle(), this._context.getResources().getString(R.string.subtitle), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
+        _subtitle.setZIndex(3);
+        mScene.attachChild(_subtitle);
+        centerText(_subtitle);
 
 
+        // instruction
         _instructionText = new Text(0, 280, _ressourceManager.getIntructionTextFont(), this._context.getResources().getString(R.string.instruction), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
         _instructionText.setZIndex(3);
         mScene.attachChild(_instructionText);
@@ -168,7 +169,7 @@ public class SceneManager {
 
     public Text getMakeItText()
     {
-        return _makeItText;
+        return _subtitle;
     }
 
     public Text getInstructionText()

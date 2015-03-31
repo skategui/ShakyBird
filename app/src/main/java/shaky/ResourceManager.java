@@ -27,11 +27,10 @@ public class ResourceManager {
 	// fonts
 	private Font _scoreFont;
     private Font _titleFont;
-    private Font mCopyFont;
     private StrokeFont _failFont;
     private StrokeFont _gravityFont;
-    private StrokeFont _makeItshakeFont;
-    private StrokeFont _instructionTextfont;
+    private StrokeFont _subtitle;
+    private StrokeFont _instructionFont;
 	// sounds
     private Sound _score;
     private Sound _die;
@@ -40,8 +39,8 @@ public class ResourceManager {
 	//textures
     private BitmapTextureAtlas _textureEarth;
     private BitmapTextureAtlas _textureSpace;
-    private ITextureRegion _earthBack;
-    private ITextureRegion _spaceBack;
+    private ITextureRegion _earthBackground;
+    private ITextureRegion _spaceBackground;
     private TextureRegion _instructionTexture;
 
 
@@ -76,8 +75,8 @@ public class ResourceManager {
         this._textureEarth = new BitmapTextureAtlas(_context.getTextureManager(), 718, 1184, TextureOptions.NEAREST_PREMULTIPLYALPHA);
         this._textureSpace = new BitmapTextureAtlas(_context.getTextureManager(), 718, 1184, TextureOptions.NEAREST_PREMULTIPLYALPHA);
 
-        this._earthBack = BitmapTextureAtlasTextureRegionFactory.createFromAsset(_textureEarth, _context.getAssets(), Config.Textures.BACKGROUND_EARTH, 0, 0);
-        this._spaceBack = BitmapTextureAtlasTextureRegionFactory.createFromAsset(_textureSpace, _context.getAssets(), Config.Textures.BACKGROUND_SPACE, 0, 0);
+        this._earthBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(_textureEarth, _context.getAssets(), Config.Textures.BACKGROUND_EARTH, 0, 0);
+        this._spaceBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(_textureSpace, _context.getAssets(), Config.Textures.BACKGROUND_SPACE, 0, 0);
 
         this._textureEarth.load();
         this._textureSpace.load();
@@ -116,7 +115,7 @@ public class ResourceManager {
 
         // updateScore board
         final ITexture scoreFontTexture = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-        _scoreFont = new StrokeFont(_context.getFontManager(), scoreFontTexture, typeFace, 45, true, Color.WHITE, 2, Color.BLACK);
+        _scoreFont = new StrokeFont(_context.getFontManager(), scoreFontTexture, typeFace, 35, true, Color.WHITE, 2, Color.BLACK);
         _scoreFont.load();
 
         // title texture
@@ -124,11 +123,6 @@ public class ResourceManager {
         _titleFont = new StrokeFont(_context.getFontManager(), titleTexture, typeFace, 90, true,
                 _context.getResources().getColor(R.color.custom_blue_trans), 2, Color.BLACK);
         _titleFont.load();
-
-
-        final ITexture copyFontTexture = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-        mCopyFont = new StrokeFont(_context.getFontManager(), copyFontTexture, typeFace, 40, true, Color.WHITE, 2, Color.BLACK);
-        mCopyFont.load();
 
         // Fail message
         final ITexture FailedTexture = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
@@ -142,14 +136,14 @@ public class ResourceManager {
 
         // inv Make It shake message
         final ITexture MakeItShakeTexture = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-        _makeItshakeFont = new StrokeFont(_context.getFontManager(), MakeItShakeTexture, typeFace, 50, true, Color.WHITE, 2, Color.BLACK);
-        _makeItshakeFont.load();
+        _subtitle = new StrokeFont(_context.getFontManager(), MakeItShakeTexture, typeFace, 50, true, Color.WHITE, 2, Color.BLACK);
+        _subtitle.load();
 
 
-        // inv Make It shake message
+        // instruction
         final ITexture instructionText = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-        _instructionTextfont = new StrokeFont(_context.getFontManager(), instructionText, typeFace, 40, true, Color.WHITE, 2, Color.BLACK);
-        _instructionTextfont.load();
+        _instructionFont = new StrokeFont(_context.getFontManager(), instructionText, typeFace, 40, true, Color.WHITE, 2, Color.BLACK);
+        _instructionFont.load();
 
         // instructions img
         BitmapTextureAtlas inastruction = new BitmapTextureAtlas(_context.getTextureManager(), 285, 245, TextureOptions.BILINEAR);
@@ -158,11 +152,11 @@ public class ResourceManager {
 
     }
 
-    public Sound get_score() {
+    public Sound getScore() {
         return _score;
     }
 
-    public Sound get_die() {
+    public Sound getDie() {
         return _die;
     }
 
@@ -170,12 +164,12 @@ public class ResourceManager {
         return _music;
     }
 
-    public ITextureRegion get_earthBack() {
-        return _earthBack;
+    public ITextureRegion getEarthBackground() {
+        return _earthBackground;
     }
 
-    public ITextureRegion get_spaceBack() {
-        return _spaceBack;
+    public ITextureRegion getSpaceBackground() {
+        return _spaceBackground;
     }
 
     public Font getScoreFont() {
@@ -186,12 +180,12 @@ public class ResourceManager {
         return _titleFont;
     }
 
-    public Font getMakeItshakeFont() {
-        return _makeItshakeFont;
+    public Font getSubTitle() {
+        return _subtitle;
     }
 
     public Font getIntructionTextFont() {
-        return _instructionTextfont;
+        return _instructionFont;
     }
 
     public StrokeFont getGravityFont() {

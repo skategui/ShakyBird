@@ -1,6 +1,8 @@
 package shaky;
 
 
+import android.widget.Toast;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -44,6 +46,10 @@ public class GameManager {
     private float prevX = 0;
     private float parallaxValueOffset = 0;
     private float mBirdXOffset;
+
+    // click mode
+    private int _nbrClick = 0;
+    private boolean _canClick = false;
 
     public GameManager(MainActivity activity) {
         this._activity = activity;
@@ -224,7 +230,7 @@ public class GameManager {
      */
     public void updateScore(){
         _score++;
-        _activity.getResourceManager().get_score().play();
+        _activity.getResourceManager().getScore().play();
         displayScore();
     }
 
@@ -309,7 +315,7 @@ public class GameManager {
 
         _currentState = eStateGame.DYING;
 
-        _activity.getResourceManager().get_die().play();
+        _activity.getResourceManager().getDie().play();
         this._activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
         this._activity.getScene().attachChild(_activity.getSceneManager().getFailText());
         _activity.getSceneManager().getBird().getSprite().stopAnimation();
@@ -353,9 +359,13 @@ public class GameManager {
 
     /**
      * Set listener on the current scene
+     *  return false if the user cant click on the scene
      */
-    public void setListenerOnTouch()
+    public boolean setListenerOnTouch()
     {
+        clickModActivated();
+        if (_canClick == false)
+            return false;
         switch (_currentState) {
 
             case READY:
@@ -366,6 +376,25 @@ public class GameManager {
             case PLAYING:
                 _activity.getSceneManager().getBird().jump();
                 break;
+        }
+        return true;
+    }
+
+    /**
+     * activated mode when the user can click
+     */
+    private void clickModActivated()
+    {
+        _nbrClick++;
+        if (_nbrClick == 10)
+        {
+            _canClick = true;
+            _activity.runOnUiThread( new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(_activity.getApplicationContext(), "Click mode activated",  Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 

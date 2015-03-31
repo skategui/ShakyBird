@@ -25,9 +25,11 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 	// sprites
 	private ParallaxBackground _background;
 
+    // shake / vibration variables
     private SensorManager _sensor;
     private long lastUpdate;
     private float x,y,z, last_x, last_y, last_z;
+
 
 
 	@Override
@@ -92,8 +94,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 
     }
 
-
-		
 	@Override
 	protected void onCreateResources() {
 		_resourceManager = new ResourceManager(this);
@@ -121,6 +121,10 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorListen
 		return _scene;
 	}
 
+    /**
+     * initialise touch listener on a given scene
+     * @param scene given scene to apply listener
+     */
     private void defineListener(Scene scene)
     {
         scene.setOnSceneTouchListener(new IOnSceneTouchListener() {

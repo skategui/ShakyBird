@@ -2,8 +2,7 @@
 <resources>
 
     <string name="app_name">Shaky Bird</string>
-
-    <string name="makeitshake">Make it shake !</string>
+    <string name="subtitle">Make it shake !</string>
     <string name="failed">Failed !</string>
     <string name="grav_invertion">Gravity\'s invertion!</string>
     <string name="bestscore">Best : </string>

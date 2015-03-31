@@ -98,6 +98,9 @@ public class Bird {
 	}
 
 
+    /**
+     * make the bird jump !
+     */
 	public void jump(){
 		mVerticalSpeed = (-Config.Bird.FLAP_POWER);
 		_macceleration = 0;
@@ -105,7 +108,7 @@ public class Bird {
 	}	
 
 	public void hover(){
-		mHoverStep+=0.13f;	
+		mHoverStep += 0.13f;
 		if(mHoverStep > WRAPAROUND_POINT) mHoverStep = 0;
 		
 		float newY = mBirdYOffset + ((float) (7 * Math.sin(mHoverStep)));		
