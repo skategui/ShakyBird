@@ -127,13 +127,12 @@ public class GameManager {
         }
     }
 
-
     /**
      * The user just died
      */
     private void die() {
         float newY = _activity.getSceneManager().getBird().move(false); // get the bird to update itself
-        if (newY >= Config.Game.FLOOR_BOUND)
+        if (newY >= Config.Game.FLOOR_BOUND) // out of screen
             dead();
     }
 
@@ -185,7 +184,7 @@ public class GameManager {
         if (newY >= Config.Game.FLOOR_BOUND)
             gameOver(); // check if it game over from twatting the floor
 
-        // now create _pipesList
+        // create one more pipe
         _nbrPipesSpawn++;
 
         if (_nbrPipesSpawn > Config.Game.PIPE_SPAWN_INTERVAL) {
@@ -253,10 +252,13 @@ public class GameManager {
         removeAllPipes();
 
         PipePair.resetGame();
+        this._activity.getSceneManager().changeBackground(false);
 
         this._activity.getScene().attachChild(_activity.getSceneManager().getAppText());
         this._activity.getScene().attachChild(_activity.getSceneManager().getMakeItText());
+        this._activity.getScene().attachChild(_activity.getSceneManager().getInstructionText());
         this._activity.getScene().attachChild(_activity.getSceneManager().getInstructionSprite());
+        this._activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
     }
 
     /**
@@ -284,9 +286,19 @@ public class GameManager {
         this._activity.getScene().detachChild(_activity.getSceneManager().getAppText());
         this._activity.getScene().detachChild(_activity.getSceneManager().getInstructionSprite());
         this._activity.getScene().detachChild(_activity.getSceneManager().getMakeItText());
-        this._activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
+        this._activity.getScene().detachChild(_activity.getSceneManager().getInstructionText());
+
         displayScore();
         _activity.getSceneManager().getBird().jump();
+
+
+        TimerHandler a=  new TimerHandler(0.1f, false, new ITimerCallback() {
+            @Override
+            public void onTimePassed(final TimerHandler pTimerHandler) {
+                _activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
+            }
+        });
+        this._activity.getScene().registerUpdateHandler(a);
     }
 
 
@@ -314,7 +326,6 @@ public class GameManager {
         _timer = new TimerHandler(1.6f, false, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler pTimerHandler) {
-                _activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
                 _activity.getScene().detachChild(_activity.getSceneManager().getFailText());
                 restartGame();
                 _activity.getScene().unregisterUpdateHandler(_timer);
@@ -337,9 +348,7 @@ public class GameManager {
                 _activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
             }
         });
-
         this._activity.getScene().registerUpdateHandler(a);
-
     }
 
     /**

@@ -25,6 +25,7 @@ public class SceneManager {
     private Sprite _instructionSprite;
     private Text _failText;
     private Text _gravityText;
+    private Text _instructionText;
 
     private Sprite _spaceBackground;
     private Sprite _earthBackground;
@@ -44,8 +45,8 @@ public class SceneManager {
         Scene mScene = new Scene();
         VertexBufferObjectManager vbo = _context.getVertexBufferObjectManager();
 
-        _earthBackground = new Sprite(0, 0 , _ressourceManager.getmBackgroundTextureRegion(), vbo);
-        _spaceBackground = new Sprite(0, 0 , _ressourceManager.getmBackgroundTextureSpace(), vbo);
+        _earthBackground = new Sprite(0, 0 , _ressourceManager.get_earthBack(), vbo);
+        _spaceBackground = new Sprite(0, 0 , _ressourceManager.get_spaceBack(), vbo);
 
 
         _parallax.attachParallaxEntity(new ParallaxEntity(1, _earthBackground));
@@ -85,23 +86,30 @@ public class SceneManager {
         mScene.attachChild(_scoreText);
 
         // App Name
-        _appNameText = new Text(0, 100, _ressourceManager.getTitleFont(), this._context.getResources().getString(R.string.app_name), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
+        _appNameText = new Text(0, 80, _ressourceManager.getTitleFont(), this._context.getResources().getString(R.string.app_name), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
         _appNameText.setZIndex(3);
         mScene.attachChild(_appNameText);
         centerText(_appNameText);
 
         // make it skake msg !
-        _makeItText = new Text(0, 180, _ressourceManager.getGravityFont(), this._context.getResources().getString(R.string.makeitshake), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
+        _makeItText = new Text(0, 170, _ressourceManager.getMakeItshakeFont(), this._context.getResources().getString(R.string.makeitshake), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
         _makeItText.setZIndex(3);
         mScene.attachChild(_makeItText);
         centerText(_makeItText);
 
+
+        _instructionText = new Text(0, 280, _ressourceManager.getIntructionTextFont(), this._context.getResources().getString(R.string.instruction), new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
+        _instructionText.setZIndex(3);
+        mScene.attachChild(_instructionText);
+        centerText(_instructionText);
+
         // instructions image
-        _instructionSprite = new Sprite(0, 0, 200, 172, _ressourceManager.getmInstructionsTexture(), _context.getVertexBufferObjectManager());
+        _instructionSprite = new Sprite(0, 0, 100, 110, _ressourceManager.get_instructionTexture(), _context.getVertexBufferObjectManager());
         _instructionSprite.setZIndex(3);
         mScene.attachChild(_instructionSprite);
         centerSprite(_instructionSprite);
-        _instructionSprite.setY(_instructionSprite.getY() + 20);
+        _instructionSprite.setY(_instructionSprite.getY() + 50);
+        _instructionSprite.setX(_instructionSprite.getX() + 100);
 
         //  failed
         _failText = new Text(0, Config.Game.CAMERA_HEIGHT / 2 - 100, _ressourceManager.getFailedFont()
@@ -161,5 +169,10 @@ public class SceneManager {
     public Text getMakeItText()
     {
         return _makeItText;
+    }
+
+    public Text getInstructionText()
+    {
+        return _instructionText;
     }
 }

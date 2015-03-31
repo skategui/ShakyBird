@@ -54,7 +54,7 @@ public class Config {
     public class Songs
     {
          // Score music
-        public static final String SCOREMUSIC = "updateScore.ogg";
+        public static final String SCOREMUSIC = "score.ogg";
          // game over music
         public static final String GAMEOVERMUSHC = "gameover.ogg";
          // game music
@@ -65,13 +65,13 @@ public class Config {
     public class Textures
     {
          // intro image
-        public static  final String INSTRUCTION = "instructions.png";
+        public static  final String INSTRUCTION = "shake.png";
         // font filename
         public static  final String FONTNAME = "angrybirds.ttf";
         // background on earth
-        public static final String BACKGROUND_EARTH = "background480.png";
+        public static final String BACKGROUND_EARTH = "earth_back.png";
         // Backgroud in space
-        public static final String BACKGROUND_SPACE = "background_space2.png";
+        public static final String BACKGROUND_SPACE = "space_back.png";
         // pipe upper head part
         public static final String PIPEUPPER = "pipeupper.png";
         // pipe upper body
