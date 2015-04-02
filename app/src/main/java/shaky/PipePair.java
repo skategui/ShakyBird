@@ -73,8 +73,7 @@ public class PipePair {
     }
 
 
-	public PipePair(int mOpeningHeight,
-			VertexBufferObjectManager mVertexBufferObjectManager, Scene _scene) {
+	public PipePair(int mOpeningHeight, VertexBufferObjectManager mVertexBufferObjectManager, Scene _scene) {
 		super();
 		this._scene = _scene;
 
@@ -92,7 +91,7 @@ public class PipePair {
 		_lowerPipe.setZIndex(1);
 		_scene.attachChild(_lowerPipe);
 
-		_lowerPipeSection = new Sprite(PIPE_Y_OFFSET + 3, mOpeningHeight+ _distance, 82, (644-(mOpeningHeight+ _distance)), _lowerPipeSectionTexture, mVertexBufferObjectManager);
+		_lowerPipeSection = new Sprite(PIPE_Y_OFFSET + 3, mOpeningHeight+ _distance, 82, (740 -(mOpeningHeight+ _distance)), _lowerPipeSectionTexture, mVertexBufferObjectManager);
 		_lowerPipeSection.setZIndex(1);
 		_scene.attachChild(_lowerPipeSection);
 		_scene.sortChildren();

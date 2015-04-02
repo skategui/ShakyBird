@@ -28,6 +28,7 @@ public class GameManager {
     }
 
     private TimerHandler _timer;
+    private TimerHandler _timer2;
 
     protected float _position;
 
@@ -50,6 +51,7 @@ public class GameManager {
     // click mode
     private int _nbrClick = 0;
     private boolean _canClick = false;
+    private boolean shakeHand = false;
 
     public GameManager(MainActivity activity) {
         this._activity = activity;
@@ -92,6 +94,9 @@ public class GameManager {
      */
     public void makeItJump() {
         switch (_currentState) {
+            case READY:
+                startPlaying();
+                break;
             case PLAYING:
                 _activity.getSceneManager().getBird().jump();
                 break;
@@ -124,13 +129,24 @@ public class GameManager {
      * User is read to play  : intro page
      */
     private void ready() {
-
         _position -= Config.Game.SCROLL_SPEED;
         _activity.getSceneManager().getBird().hover();
 
         if (!_activity.getResourceManager().getMusic().isPlaying()) {
             _activity.getResourceManager().getMusic().play();
         }
+
+        this._activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
+
+        _activity.runOnUiThread( new Runnable() {
+            @Override
+            public void run() {
+                if (_currentState == eStateGame.READY)
+                {
+                    makeAnimationShake();
+                }
+            }
+        });
     }
 
     /**
@@ -167,12 +183,14 @@ public class GameManager {
 
     /**
      * Display the background in the earths and make the bird jump with a normal gravity
+     * Dont display the message when the user starts a game
      * @return false
      */
     private float getPositionHeart() {
         if (lastwithGravity == true) {
             _activity.getSceneManager().changeBackground(false);
             lastwithGravity = false;
+            if (_score > 0)
             displayChangeGravity();
         }
         return _activity.getSceneManager().getBird().move(false); // get the bird to update itself
@@ -182,7 +200,6 @@ public class GameManager {
      * the user is currently playing, check where he should be and update the scene.
      */
     private void play() {
-
         _position -= Config.Game.SCROLL_SPEED;
 
         float newY = isSpaceScene() == true ? getPositionInSpace() : getPositionHeart();
@@ -264,7 +281,31 @@ public class GameManager {
         this._activity.getScene().attachChild(_activity.getSceneManager().getMakeItText());
         this._activity.getScene().attachChild(_activity.getSceneManager().getInstructionText());
         this._activity.getScene().attachChild(_activity.getSceneManager().getInstructionSprite());
-        this._activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
+    }
+
+
+
+    private void makeAnimationShake()
+    {
+        _activity.getSceneManager().getGravityText().detachSelf();
+        _activity.getSceneManager().getInstructionSprite2().detachSelf();
+        _activity.getSceneManager().getInstructionSprite().detachSelf();
+        if (shakeHand == false)
+        {
+            this._activity.getScene().detachChild(_activity.getSceneManager().getInstructionSprite());
+            this._activity.getScene().attachChild(_activity.getSceneManager().getInstructionSprite2());
+        }
+        else
+        {
+            this._activity.getScene().detachChild(_activity.getSceneManager().getInstructionSprite2());
+            this._activity.getScene().attachChild(_activity.getSceneManager().getInstructionSprite());
+        }
+        shakeHand = shakeHand ? false : true;
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -287,26 +328,19 @@ public class GameManager {
 
         this._currentState = eStateGame.PLAYING;
 
-        this._activity.getResourceManager().getMusic().pause();
-        this._activity.getResourceManager().getMusic().seekTo(0);
+            this._activity.getResourceManager().getMusic().pause();
+            this._activity.getResourceManager().getMusic().seekTo(0);
+        _activity.getSceneManager().getGravityText().detachSelf();
         this._activity.getScene().detachChild(_activity.getSceneManager().getAppText());
         this._activity.getScene().detachChild(_activity.getSceneManager().getInstructionSprite());
+        this._activity.getScene().detachChild(_activity.getSceneManager().getInstructionSprite2());
         this._activity.getScene().detachChild(_activity.getSceneManager().getMakeItText());
         this._activity.getScene().detachChild(_activity.getSceneManager().getInstructionText());
+        _activity.getSceneManager().getGravityText().detachSelf();
 
         displayScore();
         _activity.getSceneManager().getBird().jump();
-
-
-        TimerHandler a=  new TimerHandler(0.1f, false, new ITimerCallback() {
-            @Override
-            public void onTimePassed(final TimerHandler pTimerHandler) {
-                _activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
-            }
-        });
-        this._activity.getScene().registerUpdateHandler(a);
     }
-
 
     /**
      * Game over view
@@ -339,6 +373,7 @@ public class GameManager {
         });
 
         this._activity.getScene().registerUpdateHandler(_timer);
+
     }
 
     /**
@@ -348,13 +383,15 @@ public class GameManager {
     {
         this._activity.getScene().attachChild(_activity.getSceneManager().getGravityText());
 
-        TimerHandler a=  new TimerHandler(1.6f, false, new ITimerCallback() {
+        _timer2 =  new TimerHandler(1.6f, false, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler pTimerHandler) {
                 _activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
+                _activity.getSceneManager().getGravityText().detachSelf();
+                _activity.getScene().unregisterUpdateHandler(_timer2);
             }
         });
-        this._activity.getScene().registerUpdateHandler(a);
+        this._activity.getScene().registerUpdateHandler(_timer2);
     }
 
     /**
@@ -370,7 +407,6 @@ public class GameManager {
 
             case READY:
                 startPlaying();
-
                 break;
 
             case PLAYING:

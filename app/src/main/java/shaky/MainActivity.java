@@ -2,8 +2,11 @@ package shaky;
 
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
@@ -14,6 +17,12 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 public class MainActivity extends SimpleBaseGameActivity implements SensorListener {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
+    }
+
 
 
 	// objects

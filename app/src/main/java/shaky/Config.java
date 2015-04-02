@@ -22,7 +22,7 @@ public class Config {
     {
         public static final float CAMERA_HEIGHT = 800;
         public static final float SCROLL_SPEED = 4.5f;	// game speed
-        public static final float FLOOR_BOUND = 601;
+        public static final float FLOOR_BOUND = 700; // height screen before considering bird as dead
         public static final int PIPE_SPAWN_INTERVAL = 100; // distance between pipe obstacles
     }
 
@@ -65,11 +65,12 @@ public class Config {
     public class Textures
     {
          // intro image
-        public static  final String INSTRUCTION = "shake.png";
+        public static  final String INSTRUCTION = "shake_green.png";
+        public static  final String INSTRUCTION2 = "shake_green2.png";
         // font filename
         public static  final String FONTNAME = "angrybirds.ttf";
         // background on earth
-        public static final String BACKGROUND_EARTH = "earth_back.png";
+        public static final String BACKGROUND_EARTH = "moutain_back.png";
         // Backgroud in space
         public static final String BACKGROUND_SPACE = "space_back.png";
         // pipe upper head part

@@ -42,7 +42,7 @@ public class ResourceManager {
     private ITextureRegion _earthBackground;
     private ITextureRegion _spaceBackground;
     private TextureRegion _instructionTexture;
-
+    private TextureRegion _instructionTexture2;
 
 
     private SimpleBaseGameActivity _context;
@@ -72,7 +72,7 @@ public class ResourceManager {
      */
     private void initialiseBackground()
     {
-        this._textureEarth = new BitmapTextureAtlas(_context.getTextureManager(), 718, 1184, TextureOptions.NEAREST_PREMULTIPLYALPHA);
+        this._textureEarth = new BitmapTextureAtlas(_context.getTextureManager(), 1190, 800, TextureOptions.NEAREST_PREMULTIPLYALPHA);
         this._textureSpace = new BitmapTextureAtlas(_context.getTextureManager(), 718, 1184, TextureOptions.NEAREST_PREMULTIPLYALPHA);
 
         this._earthBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(_textureEarth, _context.getAssets(), Config.Textures.BACKGROUND_EARTH, 0, 0);
@@ -121,7 +121,7 @@ public class ResourceManager {
         // title texture
         final ITexture titleTexture = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
         _titleFont = new StrokeFont(_context.getFontManager(), titleTexture, typeFace, 90, true,
-                _context.getResources().getColor(R.color.custom_blue_trans), 2, Color.BLACK);
+                _context.getResources().getColor(R.color.custom_dark_green), 2, Color.BLACK);
         _titleFont.load();
 
         // Fail message
@@ -142,13 +142,18 @@ public class ResourceManager {
 
         // instruction
         final ITexture instructionText = new BitmapTextureAtlas(_context.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-        _instructionFont = new StrokeFont(_context.getFontManager(), instructionText, typeFace, 40, true, Color.WHITE, 2, Color.BLACK);
+        _instructionFont = new StrokeFont(_context.getFontManager(), instructionText, typeFace, 40, true, _context.getResources().getColor(R.color.custom_pale_brown), 2, Color.BLACK);
         _instructionFont.load();
 
         // instructions img
-        BitmapTextureAtlas inastruction = new BitmapTextureAtlas(_context.getTextureManager(), 285, 245, TextureOptions.BILINEAR);
-        _instructionTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(inastruction, _context, Config.Textures.INSTRUCTION, 0, 0);
-        inastruction.load();
+        BitmapTextureAtlas handShakeImage = new BitmapTextureAtlas(_context.getTextureManager(), 285, 245, TextureOptions.BILINEAR);
+        _instructionTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(handShakeImage, _context, Config.Textures.INSTRUCTION, 0, 0);
+        handShakeImage.load();
+
+
+        BitmapTextureAtlas instruction = new BitmapTextureAtlas(_context.getTextureManager(), 285, 245, TextureOptions.BILINEAR);
+        _instructionTexture2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(instruction, _context, Config.Textures.INSTRUCTION2, 0, 0);
+        instruction.load();
 
     }
 
@@ -198,5 +203,9 @@ public class ResourceManager {
 
     public TextureRegion get_instructionTexture() {
         return _instructionTexture;
+    }
+
+    public TextureRegion get_instructionTexture2() {
+        return _instructionTexture2;
     }
 }

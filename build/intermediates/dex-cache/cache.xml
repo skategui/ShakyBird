@@ -2,6 +2,13 @@
 <items version="2" >
 
     <item
+        jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/com.crashlytics.sdk.android/answers/1.1.2/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="158555fbeff80e5a85464a818eadda8a448a1051">
+        <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/classes-8476752c5d3b49c215dd37b6b140431ad8c26e47.jar" />
+    </item>
+    <item
         jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -23,11 +30,32 @@
         <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-089f8f4b5840c1d4c168e929428593e89aed03ec.jar" />
     </item>
     <item
+        jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/com.crashlytics.sdk.android/beta/1.1.2/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0d6546c1c73cb64a6907f694e6c4bf4b50fefa70">
+        <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/classes-95287cb7faae48dacc8a6dae0886da726ccc9cd5.jar" />
+    </item>
+    <item
         jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
         <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-0878d51d07725e036a5ee044a7ff5949aaf84c16.jar" />
+    </item>
+    <item
+        jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/io.fabric.sdk.android/fabric/1.2.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0a4af6a85230b990eb8690b696d2db9247338611">
+        <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/classes-6f98e1014f226f09ae2abf36c1d401a66bcb740b.jar" />
+    </item>
+    <item
+        jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/com.crashlytics.sdk.android/crashlytics/2.2.2/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1014d409d1af641616ca7a2b3fda549cf559d605">
+        <dex dex="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/pre-dexed/debug/classes-160a13f58e101e33bd41c6adcfc3abf772a2e735.jar" />
     </item>
     <item
         jar="/Users/guillaumeagis/Desktop/persos/Shakybird/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"

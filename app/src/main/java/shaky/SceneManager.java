@@ -23,6 +23,7 @@ public class SceneManager {
     private Text _appNameText;
     private Text _subtitle;
     private Sprite _instructionSprite;
+    private Sprite _instructionSprite2;
     private Text _failText;
     private Text _gravityText;
     private Text _instructionText;
@@ -81,7 +82,7 @@ public class SceneManager {
         _player = new Bird(birdStartXOffset, birdYOffset, _context.getVertexBufferObjectManager(), mScene);
 
         //updateScore
-        _scoreText = new Text(0,720, _ressourceManager.getScoreFont(), "        ", new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
+        _scoreText = new Text(0,750, _ressourceManager.getScoreFont(), "        ", new TextOptions(HorizontalAlign.CENTER), _context.getVertexBufferObjectManager());
         _scoreText.setZIndex(3);
         mScene.attachChild(_scoreText);
 
@@ -104,13 +105,22 @@ public class SceneManager {
         mScene.attachChild(_instructionText);
         centerText(_instructionText);
 
+
+
+
         // instructions image
-        _instructionSprite = new Sprite(0, 0, 100, 110, _ressourceManager.get_instructionTexture(), _context.getVertexBufferObjectManager());
+        _instructionSprite = new Sprite(0, 0, 70, 75, _ressourceManager.get_instructionTexture(), _context.getVertexBufferObjectManager());
         _instructionSprite.setZIndex(3);
         mScene.attachChild(_instructionSprite);
         centerSprite(_instructionSprite);
-        _instructionSprite.setY(_instructionSprite.getY() + 50);
-        _instructionSprite.setX(_instructionSprite.getX() + 100);
+        _instructionSprite.setX(_instructionSprite.getX() + 150);
+
+
+        _instructionSprite2 = new Sprite(0, 0, 70, 75, _ressourceManager.get_instructionTexture2(), _context.getVertexBufferObjectManager());
+        _instructionSprite2.setZIndex(3);
+        //mScene.attachChild(_instructionSprite2);
+        centerSprite(_instructionSprite2);
+        _instructionSprite2.setX(_instructionSprite2.getX() + 150);
 
         //  failed
         _failText = new Text(0, Config.Game.CAMERA_HEIGHT / 2 - 100, _ressourceManager.getFailedFont()
@@ -156,6 +166,10 @@ public class SceneManager {
 
     public Sprite getInstructionSprite() {
         return _instructionSprite;
+    }
+
+    public Sprite getInstructionSprite2() {
+        return _instructionSprite2;
     }
 
     public Text getFailText() {
