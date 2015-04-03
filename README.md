@@ -21,7 +21,7 @@ In case it is too easy for you ! :)
 
 # Screenshots
 
-![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen1.png =500x889)
+![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen1.png)
 ![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen2.png)
 ![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen3.png)
 ![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen4.png)
