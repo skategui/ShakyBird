@@ -21,10 +21,10 @@ In case it is too easy for you ! :)
 
 # Screenshots
 
-![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen1.png =500x)
-![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen2.png =500x)
-![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen3.png =500x)
-![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen4.png =500x)
+![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen1.png | width = 500px)
+![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen2.png | width = 500px)
+![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen3.png | width = 500px)
+![Screenshot game](http://www.guillaumeagis.eu/screenshots/screen4.png | width = 500px)
 
 
 
