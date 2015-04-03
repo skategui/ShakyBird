@@ -41,7 +41,7 @@ public class GameManager {
     // user updateScore
     private int _score = 0;
 
-    private ArrayList<PipePair> _pipesList = new ArrayList<>();
+    private ArrayList<PipePair> _pipesList = new ArrayList<PipePair>();
 
     private int _nbrPipesSpawn;
     private float prevX = 0;

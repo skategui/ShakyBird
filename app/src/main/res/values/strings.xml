@@ -4,7 +4,7 @@
     <string name="app_name">Shaky Bird</string>
     <string name="subtitle">Make it shake !</string>
     <string name="failed">Failed !</string>
-    <string name="grav_invertion">Gravity\'s invertion!</string>
+    <string name="grav_invertion">Gravity\'s inversion!</string>
     <string name="bestscore">Best : </string>
     <string name="score">Score : </string>
     <string name="instruction">Shake your phone to start</string>
