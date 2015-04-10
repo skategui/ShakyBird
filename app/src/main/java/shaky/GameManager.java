@@ -24,7 +24,8 @@ public class GameManager {
         READY,
         PLAYING,
         DYING,
-        DEAD
+        DEAD,
+        PAUSE
     }
 
     private TimerHandler _timer;
@@ -124,6 +125,15 @@ public class GameManager {
         }
     }
 
+    public void pause()
+    {
+        _currentState = eStateGame.PAUSE;
+    }
+
+    public void resume()
+    {
+        _currentState = eStateGame.READY;
+    }
 
     /**
      * User is read to play  : intro page
@@ -132,9 +142,6 @@ public class GameManager {
         _position -= Config.Game.SCROLL_SPEED;
         _activity.getSceneManager().getBird().hover();
 
-        if (!_activity.getResourceManager().getMusic().isPlaying()) {
-            _activity.getResourceManager().getMusic().play();
-        }
 
         this._activity.getScene().detachChild(_activity.getSceneManager().getGravityText());
 
@@ -268,7 +275,6 @@ public class GameManager {
      */
     public void restartGame(){
         _currentState = eStateGame.READY;
-        _activity.getResourceManager().getMusic().resume();
         _activity.getSceneManager().getBird().restart();
         _score = 0;
         displayScore();
@@ -328,8 +334,6 @@ public class GameManager {
 
         this._currentState = eStateGame.PLAYING;
 
-            this._activity.getResourceManager().getMusic().pause();
-            this._activity.getResourceManager().getMusic().seekTo(0);
         _activity.getSceneManager().getGravityText().detachSelf();
         this._activity.getScene().detachChild(_activity.getSceneManager().getAppText());
         this._activity.getScene().detachChild(_activity.getSceneManager().getInstructionSprite());

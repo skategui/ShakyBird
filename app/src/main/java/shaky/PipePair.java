@@ -25,7 +25,7 @@ public class PipePair {
 
     // level
     private static int _nbrJump = 0;
-    private static int _distance = 220;
+    private static int _distance = 240;
     private static final float PIPE_Y_OFFSET = Config.CAMERA_WIDTH + 200; // make sure they always spawn way off screen
 
 
@@ -69,7 +69,7 @@ public class PipePair {
     public static void resetGame()
     {
         _nbrJump = 0;
-        _distance = 220;
+        _distance = 240;
     }
 
 
@@ -91,7 +91,7 @@ public class PipePair {
 		_lowerPipe.setZIndex(1);
 		_scene.attachChild(_lowerPipe);
 
-		_lowerPipeSection = new Sprite(PIPE_Y_OFFSET + 3, mOpeningHeight+ _distance, 82, (740 -(mOpeningHeight+ _distance)), _lowerPipeSectionTexture, mVertexBufferObjectManager);
+		_lowerPipeSection = new Sprite(PIPE_Y_OFFSET + 3, mOpeningHeight+ _distance, 82, (720 -(mOpeningHeight+ _distance)), _lowerPipeSectionTexture, mVertexBufferObjectManager);
 		_lowerPipeSection.setZIndex(1);
 		_scene.attachChild(_lowerPipeSection);
 		_scene.sortChildren();

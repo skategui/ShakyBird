@@ -34,7 +34,6 @@ public class ResourceManager {
 	// sounds
     private Sound _score;
     private Sound _die;
-    private Music _music;
 
 	//textures
     private BitmapTextureAtlas _textureEarth;
@@ -95,15 +94,6 @@ public class ResourceManager {
             Debug.e(e);
         }
 
-        // music
-
-        try {
-            _music = MusicFactory.createMusicFromAsset(_context.getMusicManager(), _context, Config.Songs.MUSIC);
-            _music.setVolume(0.1f);
-            _music.setLooping(true);
-        } catch (final IOException e) {
-            Debug.e("Error", e);
-        }
     }
 
     /**
@@ -165,9 +155,6 @@ public class ResourceManager {
         return _die;
     }
 
-    public Music getMusic() {
-        return _music;
-    }
 
     public ITextureRegion getEarthBackground() {
         return _earthBackground;

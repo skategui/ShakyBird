@@ -57,8 +57,7 @@ public class Config {
         public static final String SCOREMUSIC = "score.ogg";
          // game over music
         public static final String GAMEOVERMUSHC = "gameover.ogg";
-         // game music
-        public static final String MUSIC = "song.ogg";
+
         public static final String JUMPMUSIC = "jump.ogg";
     }
 
